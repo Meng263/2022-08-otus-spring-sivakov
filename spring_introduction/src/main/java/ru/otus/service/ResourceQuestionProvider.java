@@ -16,6 +16,12 @@ import java.util.stream.StreamSupport;
 
 
 public class ResourceQuestionProvider implements QuestionsProvider {
+    public final String resourceFilePath;
+
+    public ResourceQuestionProvider(String resourceFilePath) {
+        this.resourceFilePath = resourceFilePath;
+    }
+
     @Override
     public List<Question> getAllQuestions() {
         Iterable<CSVRecord> records = readCsv();
@@ -51,6 +57,4 @@ public class ResourceQuestionProvider implements QuestionsProvider {
                 })
                 .collect(Collectors.toList());
     }
-
-    public static final String resourceFilePath = "questions.csv";
 }
