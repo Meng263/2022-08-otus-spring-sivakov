@@ -9,7 +9,7 @@ import java.util.List;
 class QuestionTest {
     @Test
     public void whenHasThreeAnswersGenerateStringCorrect() {
-        String expected = "Сколько океанов существует в Мире (география)?"
+        String expected = "How many oceans are there in the world?"
                 + System.lineSeparator()
                 + "3"
                 + System.lineSeparator()
@@ -18,7 +18,7 @@ class QuestionTest {
                 + "5"
                 + System.lineSeparator();
 
-        String result = new Question("Сколько океанов существует в Мире (география)?",
+        String result = new Question("How many oceans are there in the world?",
                 List.of(new Answer("3"),
                         new Answer("4"),
                         new Answer("5")
