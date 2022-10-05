@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 
 
 public class ResourceQuestionProvider implements QuestionsProvider {
-    public final String resourceFilePath;
+    private final String resourceFilePath;
 
     public ResourceQuestionProvider(String resourceFilePath) {
         this.resourceFilePath = resourceFilePath;
