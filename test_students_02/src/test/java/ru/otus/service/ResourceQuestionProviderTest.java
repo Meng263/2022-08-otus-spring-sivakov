@@ -11,9 +11,10 @@ class ResourceQuestionProviderTest {
     @Test
     public void correctParseQuestionsFromResourceFile() {
         String csvPath = "test_questions.csv";
-        ResourceQuestionProvider qp = new ResourceQuestionProvider(csvPath);
+        ResourceQuestionProvider qp = new ResourceQuestionProvider(csvPath, new SCVQuestionParser());
         List<Question> result = qp.getAllQuestions();
         List<Question> expected = List.of(new Question("How many oceans are there in the world?",
+                2,
                 List.of(new Answer("3"), new Answer("4"), new Answer("5"))));
         Assertions.assertEquals(result, expected);
     }

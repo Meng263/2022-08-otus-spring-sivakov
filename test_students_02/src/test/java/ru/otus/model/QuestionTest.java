@@ -19,6 +19,7 @@ class QuestionTest {
                 + System.lineSeparator();
 
         String result = new Question("How many oceans are there in the world?",
+                2,
                 List.of(new Answer("3"),
                         new Answer("4"),
                         new Answer("5")

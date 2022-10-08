@@ -2,13 +2,14 @@ package ru.otus.service;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import ru.otus.model.Answer;
 import ru.otus.model.Question;
+import ru.otus.model.RawQuestionData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,17 +19,20 @@ import java.util.stream.StreamSupport;
 public class ResourceQuestionProvider implements QuestionsProvider {
     private final String resourceFilePath;
 
-    public ResourceQuestionProvider(String resourceFilePath) {
+    private final QuestionsParser parser;
+
+    public ResourceQuestionProvider(String resourceFilePath, QuestionsParser parser) {
         this.resourceFilePath = resourceFilePath;
+        this.parser = parser;
     }
 
     @Override
     public List<Question> getAllQuestions() {
-        Iterable<CSVRecord> records = readCsv();
-        return parseQuestions(records);
+        Collection<RawQuestionData> records = readCsv();
+        return parser.parseQuestions(records);
     }
 
-    private Iterable<CSVRecord> readCsv() {
+    private Collection<RawQuestionData> readCsv() {
         InputStream questionsStream = ResourceQuestionProvider.class.getClassLoader()
                 .getResourceAsStream(resourceFilePath);
 
@@ -41,20 +45,8 @@ public class ResourceQuestionProvider implements QuestionsProvider {
             e.printStackTrace();
         }
 
-        return records;
-    }
-
-    private List<Question> parseQuestions(Iterable<CSVRecord> records) {
         return StreamSupport.stream(records.spliterator(), false)
-                .map(record -> {
-                    List<String> elems = record.toList();
-                    return new Question(
-                            elems.get(0),
-                            elems.subList(1, elems.size() - 1).stream()
-                                    .map(Answer::new)
-                                    .collect(Collectors.toList())
-                    );
-                })
+                .map(record -> new RawQuestionData(record.toList()))
                 .collect(Collectors.toList());
     }
 }

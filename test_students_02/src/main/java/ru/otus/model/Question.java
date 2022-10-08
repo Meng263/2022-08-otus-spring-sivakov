@@ -7,8 +7,11 @@ public class Question {
     private final String content;
     private final List<Answer> answers;
 
-    public Question(String content, List<Answer> answers) {
+    private final int rightAnswer;
+
+    public Question(String content,int rightAnswer, List<Answer> answers) {
         this.content = content;
+        this.rightAnswer = rightAnswer;
         this.answers = answers;
     }
 
@@ -18,6 +21,10 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public int getRightAnswer() {
+        return rightAnswer;
     }
 
     public String buildConsoleString() {
