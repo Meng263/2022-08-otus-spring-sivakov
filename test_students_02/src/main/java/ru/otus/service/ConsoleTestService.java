@@ -10,15 +10,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class ConsoleInterfaceService implements InterfaceService {
+public class ConsoleTestService implements TestService {
     private final QuestionsProvider questionsProvider;
     private final StudentRegisterService studentRegisterService;
     private final QuestionsSettings questionsSettings;
     private final BufferedReader bufferedReader;
 
-    public ConsoleInterfaceService(QuestionsProvider questionsProvider,
-                                   StudentRegisterService studentRegisterService,
-                                   QuestionsSettings questionsSettings, InputStream inputStream) {
+    public ConsoleTestService(QuestionsProvider questionsProvider,
+                              StudentRegisterService studentRegisterService,
+                              QuestionsSettings questionsSettings, InputStream inputStream) {
         this.questionsProvider = questionsProvider;
         this.studentRegisterService = studentRegisterService;
         this.questionsSettings = questionsSettings;
@@ -26,7 +26,7 @@ public class ConsoleInterfaceService implements InterfaceService {
     }
 
     @Override
-    public void doTest() {
+    public void testStudent() {
         Student student = studentRegisterService.registerStudent();
         List<Question> questions = questionsProvider.getQuestions(questionsSettings.getAllQuestionsCount());
 

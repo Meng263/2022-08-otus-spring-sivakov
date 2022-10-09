@@ -45,7 +45,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public InterfaceService interfaceService() {
-        return new ConsoleInterfaceService(questionProvider(), studentRegisterService(), questionsSettings(), inputStream);
+    public TestService testService() {
+        return new ConsoleTestService(questionProvider(), studentRegisterService(), questionsSettings(), inputStream);
     }
 }
