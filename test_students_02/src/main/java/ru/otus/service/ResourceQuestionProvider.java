@@ -3,6 +3,7 @@ package ru.otus.service;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import ru.otus.model.Question;
+import ru.otus.model.QuestionsSettings;
 import ru.otus.model.RawQuestionData;
 
 import java.io.BufferedReader;
@@ -17,12 +18,12 @@ import java.util.stream.StreamSupport;
 
 
 public class ResourceQuestionProvider implements QuestionsProvider {
-    private final String resourceFilePath;
+    private final QuestionsSettings settings;
 
     private final QuestionsParser parser;
 
-    public ResourceQuestionProvider(String resourceFilePath, QuestionsParser parser) {
-        this.resourceFilePath = resourceFilePath;
+    public ResourceQuestionProvider(QuestionsSettings settings, QuestionsParser parser) {
+        this.settings = settings;
         this.parser = parser;
     }
 
@@ -32,9 +33,16 @@ public class ResourceQuestionProvider implements QuestionsProvider {
         return parser.parseQuestions(records);
     }
 
+    @Override
+    public List<Question> getQuestions(int count) {
+        List<Question> allQuestions = getAllQuestions();
+        assert count <= allQuestions.size();
+        return allQuestions.subList(0, count);
+    }
+
     private Collection<RawQuestionData> readCsv() {
         InputStream questionsStream = ResourceQuestionProvider.class.getClassLoader()
-                .getResourceAsStream(resourceFilePath);
+                .getResourceAsStream(settings.getCsvFilePath());
 
         Iterable<CSVRecord> records = Collections.EMPTY_LIST;
         try {

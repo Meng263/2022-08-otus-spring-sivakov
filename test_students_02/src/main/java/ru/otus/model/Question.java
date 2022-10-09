@@ -2,6 +2,7 @@ package ru.otus.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class Question {
     private final String content;
@@ -27,11 +28,12 @@ public class Question {
         return rightAnswer;
     }
 
-    public String buildConsoleString() {
+    public String buildContentWithAnswers() {
         StringBuilder builder = new StringBuilder(content);
-        answers.forEach(answer -> {
+        IntStream.range(0, answers.size())
+                .forEach(index -> {
                     builder.append(System.lineSeparator());
-                    builder.append(answer.getContent());
+                    builder.append(index + 1).append(") ").append(answers.get(index).getContent());
                 }
         );
         builder.append(System.lineSeparator());

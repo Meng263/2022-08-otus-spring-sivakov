@@ -11,11 +11,11 @@ class QuestionTest {
     public void whenHasThreeAnswersGenerateStringCorrect() {
         String expected = "How many oceans are there in the world?"
                 + System.lineSeparator()
-                + "3"
+                + "1) 3"
                 + System.lineSeparator()
-                + "4"
+                + "2) 4"
                 + System.lineSeparator()
-                + "5"
+                + "3) 5"
                 + System.lineSeparator();
 
         String result = new Question("How many oceans are there in the world?",
@@ -24,7 +24,7 @@ class QuestionTest {
                         new Answer("4"),
                         new Answer("5")
                 )
-        ).buildConsoleString();
+        ).buildContentWithAnswers();
 
         Assertions.assertEquals(expected, result);
     }
