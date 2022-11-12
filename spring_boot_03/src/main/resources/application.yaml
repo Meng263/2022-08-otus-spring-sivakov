@@ -1,0 +1,5 @@
+questions:
+  path: questions.csv
+  answers:
+    right: 4
+    all: 5
