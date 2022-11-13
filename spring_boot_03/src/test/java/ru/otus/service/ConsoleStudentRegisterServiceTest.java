@@ -2,6 +2,9 @@ package ru.otus.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.MessageSource;
+import ru.otus.config.ApplicationConfig;
+import ru.otus.fixtures.RawKeyMessageSource;
 import ru.otus.model.Student;
 
 import java.io.ByteArrayInputStream;
@@ -12,6 +15,8 @@ import java.io.PrintStream;
 class ConsoleStudentRegisterServiceTest {
     @Test
     public void CorrectResolveStudentFromInput() {
+        MessageSource messageSource = new RawKeyMessageSource();
+        ApplicationConfig config = ApplicationConfig.getDefault();
         String firstName = "Ivan";
         String secondName = "Ivanov";
         InputStream inputStream = new ByteArrayInputStream((firstName + System.lineSeparator() + secondName).getBytes());

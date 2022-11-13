@@ -2,13 +2,17 @@ package ru.otus.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.MessageSource;
+import ru.otus.fixtures.RawKeyMessageSource;
 
 import java.util.List;
+import java.util.Locale;
 
 
 class QuestionTest {
     @Test
     public void whenHasThreeAnswersGenerateStringCorrect() {
+        MessageSource messageSource = new RawKeyMessageSource();
         String expected = "How many oceans are there in the world?"
                 + System.lineSeparator()
                 + "1) 3"
@@ -24,7 +28,7 @@ class QuestionTest {
                         new Answer("4"),
                         new Answer("5")
                 )
-        ).buildContentWithAnswers();
+        ).buildContentWithAnswers(messageSource, Locale.ENGLISH);
 
         Assertions.assertEquals(expected, result);
     }
