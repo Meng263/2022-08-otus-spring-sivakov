@@ -17,7 +17,7 @@ class ConsoleStudentRegisterServiceTest {
         InputStream inputStream = new ByteArrayInputStream((firstName + System.lineSeparator() + secondName).getBytes());
         PrintStream printStream = new PrintStream(new ByteArrayOutputStream());
 
-        StudentRegisterService registerService = new ConsoleStudentRegisterService(inputStream, printStream);
+        StudentRegisterService registerService = new ConsoleStudentRegisterService(inputStream, printStream, messageSource, config);
         Student student = registerService.registerStudent();
 
         Assertions.assertEquals(student, new Student(firstName, secondName));

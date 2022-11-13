@@ -1,6 +1,5 @@
 plugins {
     id("java")
-//    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.springframework.boot") version "2.7.4"
     id("io.spring.dependency-management") version "1.0.14.RELEASE"
 }
@@ -22,7 +21,3 @@ dependencies {
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
-
-//tasks.jar {
-//    manifest.attributes["Main-Class"] = "ru.otus.Application"
-//}

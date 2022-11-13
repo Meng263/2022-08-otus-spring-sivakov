@@ -1,6 +1,9 @@
 package ru.otus.model;
 
+import org.springframework.context.MessageSource;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -10,7 +13,7 @@ public class Question {
 
     private final int rightAnswer;
 
-    public Question(String content,int rightAnswer, List<Answer> answers) {
+    public Question(String content, int rightAnswer, List<Answer> answers) {
         this.content = content;
         this.rightAnswer = rightAnswer;
         this.answers = answers;
@@ -28,14 +31,16 @@ public class Question {
         return rightAnswer;
     }
 
-    public String buildContentWithAnswers() {
-        StringBuilder builder = new StringBuilder(content);
+    public String buildContentWithAnswers(MessageSource messageSource, Locale locale) {
+        String localizedContent = messageSource.getMessage(content, null, locale);
+        StringBuilder builder = new StringBuilder(localizedContent);
         IntStream.range(0, answers.size())
                 .forEach(index -> {
-                    builder.append(System.lineSeparator());
-                    builder.append(index + 1).append(") ").append(answers.get(index).getContent());
-                }
-        );
+                            builder.append(System.lineSeparator());
+                            builder.append(index + 1).append(") ")
+                                    .append(messageSource.getMessage(answers.get(index).getContent(), null, locale));
+                        }
+                );
         builder.append(System.lineSeparator());
         return builder.toString();
     }

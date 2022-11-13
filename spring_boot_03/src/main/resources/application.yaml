@@ -1,9 +1,13 @@
-questions:
-  path: questions.csv
-  answers:
-    right: 4
-    all: 5
-
 spring:
   banner:
     location: my_banner.txt
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+questions:
+  path: questions.csv
+  locale: en
+  answers:
+    right: 4
+    all: 5

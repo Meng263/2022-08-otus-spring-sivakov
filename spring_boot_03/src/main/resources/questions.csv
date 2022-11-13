@@ -1,6 +1,6 @@
-How many oceans are there in the world?;2;3;4;5
-Who discovered the law of universal gravitation?;0; Isaac Newton; Robert Boyle; Andre-Marie Ampere
-How many blue stripes are on the US flag?;3;6;7;13;0
-Which country hosted the 2016 Summer Olympics?;2;China;Ireland;Brazil;Italy
-Which planet is the hottest?;0;Venera;Mercury;Mars;Saturn
-What is the rarest blood type?;3;I;II;III;IV
+questions.oceans.question;2;questions.oceans.answer.1;questions.oceans.answer.2;questions.oceans.answer.3
+questions.grav.question;0;questions.grav.answer.1;questions.grav.answer.2;questions.grav.answer.3
+questions.strips.question;3;questions.strips.answer.1;questions.strips.answer.2;questions.strips.answer.3
+questions.host.question;2;questions.host.answer.1;questions.host.answer.2;questions.host.answer.3;questions.host.answer.4
+questions.planet.question;0;questions.planet.answer.1;questions.planet.answer.2;questions.planet.answer.3;questions.planet.answer.4
+questions.blood.question;3;questions.blood.answer.1;questions.blood.answer.2;questions.blood.answer.3;questions.blood.answer.4

@@ -1,24 +1,35 @@
 package ru.otus.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.config.ApplicationConfig;
 import ru.otus.model.Student;
 
 import java.io.*;
+import java.util.Locale;
 
 @Service
 public class ConsoleStudentRegisterService implements StudentRegisterService {
     private final BufferedReader input;
-    private final PrintStream  printStream;
+    private final PrintStream printStream;
+    private final MessageSource messageSource;
+    private final ApplicationConfig config;
 
-    private final static String inviteFirstName = "Please, enter your first name:";
-    private final static String inviteSecondName = "Please, enter your second name:";
-
-    public ConsoleStudentRegisterService(InputStream input, PrintStream  printStream) {
+    public ConsoleStudentRegisterService(InputStream input,
+                                         PrintStream printStream,
+                                         MessageSource messageSource,
+                                         ApplicationConfig config) {
         this.input = new BufferedReader(new InputStreamReader(input));
         this.printStream = printStream;
+        this.messageSource = messageSource;
+        this.config = config;
     }
 
-    public ConsoleStudentRegisterService() {
+    @Autowired
+    public ConsoleStudentRegisterService(MessageSource messageSource, ApplicationConfig config) {
+        this.messageSource = messageSource;
+        this.config = config;
         this.input = new BufferedReader(new InputStreamReader(System.in));
         this.printStream = System.out;
     }
@@ -28,9 +39,10 @@ public class ConsoleStudentRegisterService implements StudentRegisterService {
         String firstName = "";
         String secondName = "";
         try {
-            printStream.println(inviteFirstName);
+            Locale locale = config.getLocale();
+            printStream.println(messageSource.getMessage("register.invite.first_name", null, locale));
             firstName = input.readLine();
-            printStream.println(inviteSecondName);
+            printStream.println(messageSource.getMessage("register.invite.second_name", null, locale));
             secondName = input.readLine();
         } catch (IOException e) {
             e.printStackTrace();

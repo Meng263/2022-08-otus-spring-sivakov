@@ -2,8 +2,11 @@ package ru.otus.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Locale;
+
 @ConfigurationProperties(prefix = "questions")
 public class ApplicationConfig {
+    private Locale locale;
     private String path;
     private Answers answers;
 
@@ -21,6 +24,14 @@ public class ApplicationConfig {
 
     public void setAnswers(Answers answers) {
         this.answers = answers;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     public static class Answers {
