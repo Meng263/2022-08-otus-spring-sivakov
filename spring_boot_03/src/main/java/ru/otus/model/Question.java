@@ -31,20 +31,6 @@ public class Question {
         return rightAnswer;
     }
 
-    public String buildContentWithAnswers(MessageSource messageSource, Locale locale) {
-        String localizedContent = messageSource.getMessage(content, null, locale);
-        StringBuilder builder = new StringBuilder(localizedContent);
-        IntStream.range(0, answers.size())
-                .forEach(index -> {
-                            builder.append(System.lineSeparator());
-                            builder.append(index + 1).append(") ")
-                                    .append(messageSource.getMessage(answers.get(index).getContent(), null, locale));
-                        }
-                );
-        builder.append(System.lineSeparator());
-        return builder.toString();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

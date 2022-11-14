@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.IntStream;
 
 @Service
 public class ConsoleTestService implements TestService {
@@ -23,7 +25,8 @@ public class ConsoleTestService implements TestService {
 
     public ConsoleTestService(QuestionsProvider questionsProvider,
                               StudentRegisterService studentRegisterService,
-                              ApplicationConfig applicationConfig, InputStream inputStream,
+                              ApplicationConfig applicationConfig,
+                              InputStream inputStream,
                               MessageSource messageSource) {
         this.questionsProvider = questionsProvider;
         this.studentRegisterService = studentRegisterService;
@@ -61,7 +64,7 @@ public class ConsoleTestService implements TestService {
     }
 
     private boolean checkAnswer(Question question) {
-        System.out.println(question.buildContentWithAnswers(messageSource, applicationConfig.getLocale()));
+        System.out.println(buildContentWithAnswers(question, applicationConfig.getLocale()));
         int answer = -1;
         try {
             answer = Integer.parseInt(bufferedReader.readLine());
@@ -69,5 +72,21 @@ public class ConsoleTestService implements TestService {
             e.printStackTrace();
         }
         return answer == question.getRightAnswer() + 1;
+    }
+
+
+    private String buildContentWithAnswers(Question question, Locale locale) {
+        String localizedContent = messageSource.getMessage(question.getContent(), null, locale);
+        StringBuilder builder = new StringBuilder(localizedContent);
+        IntStream.range(0, question.getAnswers().size())
+                .forEach(index -> {
+                            builder.append(System.lineSeparator());
+                            builder.append(index + 1).append(") ")
+                                    .append(messageSource
+                                            .getMessage(question.getAnswers().get(index).getContent(), null, locale));
+                        }
+                );
+        builder.append(System.lineSeparator());
+        return builder.toString();
     }
 }

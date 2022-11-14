@@ -16,11 +16,11 @@ public class ConsoleStudentRegisterService implements StudentRegisterService {
     private final MessageSource messageSource;
     private final ApplicationConfig config;
 
-    public ConsoleStudentRegisterService(InputStream input,
+    public ConsoleStudentRegisterService(BufferedReader input,
                                          PrintStream printStream,
                                          MessageSource messageSource,
                                          ApplicationConfig config) {
-        this.input = new BufferedReader(new InputStreamReader(input));
+        this.input = input;
         this.printStream = printStream;
         this.messageSource = messageSource;
         this.config = config;
