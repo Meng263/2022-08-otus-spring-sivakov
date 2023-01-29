@@ -3,5 +3,6 @@ include(
     "spring_introduction_01",
     "test_students_02",
     "spring_boot_03",
-    "spring_shell_04"
+    "spring_shell_04",
+	"dao_jdbc_05"
 )
