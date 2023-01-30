@@ -2,7 +2,9 @@ package ru.otus.jdbc.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.jdbc.model.Author;
 
@@ -22,13 +24,25 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public void insert(Author author) {
-        operations.update("insert into authors name values :name", Map.of("name", author.getName()));
+    public Author insert(Author author) {
+        var keyHolder = new GeneratedKeyHolder();
+        operations.update("insert into authors (name) values :name",
+                new MapSqlParameterSource(Map.of("name", author.getName())),
+                keyHolder);
+        author.setId(keyHolder.getKey().longValue());
+        return author;
     }
 
     @Override
-    public void deleteById(long id) {
-        operations.update("delete from authors where id = :id", Map.of("id", id));
+    public Author update(Author author) {
+        operations.update("update authors set name = :name",
+                Map.of("name", author.getName()));
+        return author;
+    }
+
+    @Override
+    public boolean deleteById(long id) {
+        return operations.update("delete from authors where id = :id", Map.of("id", id)) == 1;
     }
 
     @Override
