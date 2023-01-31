@@ -10,10 +10,9 @@ import ru.otus.jdbc.dao.AuthorDao;
 public class AuthorShellCommand {
     private final AuthorDao authorDao;
 
-    @ShellMethod(key = "authors-count", value = "Возвращает количество всех авторов в БД")
+    @ShellMethod(key = "authors-count", value = "Получить количество всех авторов в БД")
     public String getAllAuthorsCount() {
         var count = authorDao.count();
         return String.format("Количество авторов в БД: %d", count);
     }
-
 }

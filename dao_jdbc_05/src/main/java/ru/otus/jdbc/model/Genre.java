@@ -11,6 +11,11 @@ public class Genre {
         this.name = name;
     }
 
+    public Genre(long id) {
+        this.id = id;
+        this.name = "";
+    }
+
     private long id;
 
     private final String name;

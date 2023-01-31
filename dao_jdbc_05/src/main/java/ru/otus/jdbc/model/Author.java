@@ -10,6 +10,11 @@ public class Author {
         this.name = name;
     }
 
+    public Author(long id) {
+        this.id = id;
+        this.name = "";
+    }
+
     private long id;
 
     private final String name;

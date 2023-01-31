@@ -33,15 +33,16 @@ public class BookDaoJdbc implements BookDao {
         operations.update("insert into books (name, author_id, genre_id) values (:name, :author_id, :genre_id)",
                 getParamSource(book),
                 keyHolder);
-        book.setId(keyHolder.getKey().longValue());
-        return book;
+        long id = keyHolder.getKey().longValue();
+        book.setId(id);
+        return getById(id).orElseThrow();
     }
 
     @Override
     public Book update(Book book) {
         operations.update("update books set name = :name, author_id = :author_id, genre_id = :genre_id",
                 getParamSource(book));
-        return book;
+        return getById(book.getId()).orElseThrow();
     }
 
     @Override
@@ -56,17 +57,17 @@ public class BookDaoJdbc implements BookDao {
                                 "left join genres g on b.genre_id = g.id " +
                                 "left join authors a on b.author_id = a.id " +
                                 "where b.id = :id",
-                Map.of("id", id),
-                new BookMapper())
+                        Map.of("id", id),
+                        new BookMapper())
                 .stream().findFirst();
     }
 
     @Override
     public List<Book> getAll() {
         return operations.query("select b.id, b.name, b.author_id, b.genre_id, g.name as genre, a.name as author " +
-                                             "from books b " +
-                                                "left join genres g on b.genre_id = g.id " +
-                                                "left join authors a on b.author_id = a.id ", new BookMapper());
+                "from books b " +
+                "left join genres g on b.genre_id = g.id " +
+                "left join authors a on b.author_id = a.id ", new BookMapper());
     }
 
     private MapSqlParameterSource getParamSource(Book book) {
