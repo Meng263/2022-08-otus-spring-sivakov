@@ -1,15 +1,20 @@
 package ru.otus.jdbc.dao;
 
-import ru.otus.jdbc.model.Author;
+import ru.otus.jdbc.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
-    void insert(Author author);
+    long count();
 
-    void deleteById(long id);
+    Book insert(Book book);
 
-    Author getById(long id);
+    Book update(Book book);
 
-    List<Author> getAll();
+    boolean deleteById(long id);
+
+    Optional<Book> getById(long id);
+
+    List<Book> getAll();
 }

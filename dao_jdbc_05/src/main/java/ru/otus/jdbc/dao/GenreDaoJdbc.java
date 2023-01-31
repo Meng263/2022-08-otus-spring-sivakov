@@ -56,7 +56,7 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public List<Genre> getAll() {
-        return operations.query("select id, name from authors", new GenreMapper());
+        return operations.query("select id, name from genres", new GenreMapper());
     }
 
     private static class GenreMapper implements RowMapper<Genre> {

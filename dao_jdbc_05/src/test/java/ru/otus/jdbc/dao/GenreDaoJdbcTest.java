@@ -41,8 +41,8 @@ class GenreDaoJdbcTest {
     void listPersonsShouldBeReturnedCorrect() {
         List<Genre> genres = genreDao.getAll();
         assertEquals(genres.size(), DEFAULT_REPOSITORY_SIZE);
-        assertEquals(genres.get(0).getName(), "PUSHKIN");
-        assertEquals(genres.get(1).getName(), "LERMONTOV");
+        assertEquals(genres.get(0).getName(), "HORROR");
+        assertEquals(genres.get(1).getName(), "DRAMA");
     }
 
     @DisplayName("жанр должен корректно обновляться")

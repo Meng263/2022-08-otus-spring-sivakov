@@ -1,16 +1,13 @@
 package ru.otus.jdbc.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Genre {
 
     public Genre(String name) {
-        this.name = name;
-    }
-
-    public Genre(long id, String name) {
-        this.id = id;
         this.name = name;
     }
 
