@@ -3,6 +3,7 @@ package ru.otus.jdbc.dao;
 import ru.otus.jdbc.model.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorDao {
     long count();
@@ -13,7 +14,7 @@ public interface AuthorDao {
 
     boolean deleteById(long id);
 
-    Author getById(long id);
+    Optional<Author> getById(long id);
 
     List<Author> getAll();
 }

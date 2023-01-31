@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,7 +21,8 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public long count() {
-        return operations.getJdbcOperations().queryForObject("select count (*) from authors;", Long.class);
+        Long count = operations.getJdbcOperations().queryForObject("select count (*) from authors;", Long.class);
+        return count == null ? 0 : count;
     }
 
     @Override
@@ -46,10 +48,10 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author getById(long id) {
-        return operations.queryForObject("select id, name from authors where id = :id",
+    public Optional<Author> getById(long id) {
+        return operations.query("select id, name from authors where id = :id",
                 Map.of("id", id),
-                new AuthorMapper());
+                new AuthorMapper()).stream().findFirst();
     }
 
     @Override

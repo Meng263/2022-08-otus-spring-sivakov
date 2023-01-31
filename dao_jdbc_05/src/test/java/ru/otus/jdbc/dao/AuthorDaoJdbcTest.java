@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
 import ru.otus.jdbc.model.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +32,7 @@ class AuthorDaoJdbcTest {
     void shouldAuthorBeAdded() {
         String authorName = "new authorName";
         Author newAuthor = authorDao.insert(new Author(authorName));
-        assertNotNull(newAuthor.getId());
+        assertNotEquals(newAuthor.getId(), 0L);
         assertEquals(newAuthor.getName(), authorName);
     }
 
@@ -51,7 +52,9 @@ class AuthorDaoJdbcTest {
         long authorId = newAuthor.getId();
         Author forUpdate = new Author(authorId, "updated name");
         authorDao.update(forUpdate);
-        Author author = authorDao.getById(authorId);
+        Optional<Author> optional = authorDao.getById(authorId);
+        assertTrue(optional.isPresent());
+        Author author = optional.get();
         assertEquals(author.getId(), authorId);
         assertEquals(author.getName(), forUpdate.getName());
     }
@@ -60,9 +63,11 @@ class AuthorDaoJdbcTest {
     @Test
     void personShouldBeReturnedById() {
         int pushkinId = 10;
-        Author pushkin = authorDao.getById(pushkinId);
-        assertEquals(pushkin.getName(), "PUSHKIN");
-        assertEquals(pushkin.getId(), pushkinId);
+        Optional<Author> optional = authorDao.getById(pushkinId);
+        assertTrue(optional.isPresent());
+        Author author = optional.get();
+        assertEquals(author.getName(), "PUSHKIN");
+        assertEquals(author.getId(), pushkinId);
     }
 
     @DisplayName("пользователь должен удаляться по id")

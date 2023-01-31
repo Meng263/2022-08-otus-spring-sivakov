@@ -1,17 +1,20 @@
 package ru.otus.jdbc.dao;
 
-import ru.otus.jdbc.model.Author;
 import ru.otus.jdbc.model.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreDao {
-    void insert(Genre genre);
+    long count();
 
-    void deleteById(long id);
+    Genre insert(Genre genre);
 
-    Author getById(long id);
+    Genre update(Genre genre);
+
+    boolean deleteById(long id);
+
+    Optional<Genre> getById(long id);
 
     List<Genre> getAll();
-
 }

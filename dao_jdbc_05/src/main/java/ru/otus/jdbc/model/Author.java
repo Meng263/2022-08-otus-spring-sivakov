@@ -16,7 +16,4 @@ public class Author {
     private long id;
 
     private final String name;
-
-//    private final Set<Book> books;
-
 }
