@@ -27,14 +27,14 @@ class BookDaoJdbcTest {
 
     @DisplayName("возвращать ожидаемое количество книг в БД")
     @Test
-    void shouldReturnExpectedPersonCount() {
+    void shouldReturnExpectedBookCount() {
         long actualPersonsCount = bookDao.count();
         assertThat(actualPersonsCount).isEqualTo(DEFAULT_REPOSITORY_SIZE);
     }
 
     @DisplayName("вставка должна генерировать идентификатор")
     @Test
-    void shouldAuthorBeAdded() {
+    void shouldBookBeAdded() {
         String bookName = "new bookName";
         Book newBook = bookDao.insert(new Book(bookName, authorHelper, genreHelper));
         assertNotEquals(newBook.getId(), 0L);
@@ -43,16 +43,16 @@ class BookDaoJdbcTest {
 
     @DisplayName("должен корректно возвращать список книг")
     @Test
-    void listPersonsShouldBeReturnedCorrect() {
+    void listBooksShouldBeReturnedCorrect() {
         List<Book> books = bookDao.getAll();
         assertEquals(books.size(), DEFAULT_REPOSITORY_SIZE);
         assertEquals(books.get(0).getName(), "RUSALKA");
         assertEquals(books.get(1).getName(), "MASQARAD");
     }
 
-    @DisplayName("пользователь должен корректно обновляться")
+    @DisplayName("книга должен корректно обновляться")
     @Test
-    void personShouldBeUpdatedCorrect() {
+    void bookShouldBeUpdatedCorrect() {
         Book newBook = bookDao.getById(10L).orElseThrow();
         long newBookId = newBook.getId();
         Book forUpdate = new Book(newBookId, "updated name", authorHelper, genreHelper);
@@ -66,9 +66,9 @@ class BookDaoJdbcTest {
         assertEquals(author.getAuthor(), forUpdate.getAuthor());
     }
 
-    @DisplayName("должен корректно возвращать пользователя по id")
+    @DisplayName("должен корректно возвращать книгу по id")
     @Test
-    void personShouldBeReturnedById() {
+    void bookShouldBeReturnedById() {
         int rusalkaId = 10;
         Optional<Book> optional = bookDao.getById(rusalkaId);
         assertTrue(optional.isPresent());
@@ -77,9 +77,9 @@ class BookDaoJdbcTest {
         assertEquals(author.getId(), rusalkaId);
     }
 
-    @DisplayName("пользователь должен удаляться по id")
+    @DisplayName("книга должена удаляться по id")
     @Test
-    void personShouldBeDeleted() {
+    void bookShouldBeDeleted() {
         int rusalkaId = 10;
         assertTrue(bookDao.deleteById(rusalkaId));
         assertFalse(bookDao.deleteById(rusalkaId));

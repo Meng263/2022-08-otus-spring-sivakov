@@ -22,14 +22,14 @@ class GenreDaoJdbcTest {
 
     @DisplayName("возвращать ожидаемое количество жанров в БД")
     @Test
-    void shouldReturnExpectedPersonCount() {
+    void shouldReturnExpectedGenresCount() {
         long actualPersonsCount = genreDao.count();
         assertThat(actualPersonsCount).isEqualTo(DEFAULT_REPOSITORY_SIZE);
     }
 
     @DisplayName("вставка должна генерировать идентификатор")
     @Test
-    void shouldAuthorBeAdded() {
+    void shouldGenreBeAdded() {
         String genreName = "new genreName";
         Genre newAuthor = genreDao.insert(new Genre(genreName));
         assertNotEquals(newAuthor.getId(), 0L);
@@ -38,7 +38,7 @@ class GenreDaoJdbcTest {
 
     @DisplayName("должен корректно возвращать список жанров")
     @Test
-    void listPersonsShouldBeReturnedCorrect() {
+    void listGenresShouldBeReturnedCorrect() {
         List<Genre> genres = genreDao.getAll();
         assertEquals(genres.size(), DEFAULT_REPOSITORY_SIZE);
         assertEquals(genres.get(0).getName(), "HORROR");
@@ -47,7 +47,7 @@ class GenreDaoJdbcTest {
 
     @DisplayName("жанр должен корректно обновляться")
     @Test
-    void personShouldBeUpdatedCorrect() {
+    void genreShouldBeUpdatedCorrect() {
         Genre newGenre = genreDao.insert(new Genre("new_genre"));
         long genreId = newGenre.getId();
         Genre forUpdate = new Genre(genreId, "updated name");
@@ -61,7 +61,7 @@ class GenreDaoJdbcTest {
 
     @DisplayName("должен корректно возвращать жанр по id")
     @Test
-    void personShouldBeReturnedById() {
+    void genreShouldBeReturnedById() {
         int horrorId = 10;
         Optional<Genre> optional = genreDao.getById(horrorId);
         assertTrue(optional.isPresent());
@@ -70,13 +70,13 @@ class GenreDaoJdbcTest {
         assertEquals(genre.getId(), horrorId);
     }
 
-    @DisplayName("пользователь должен удаляться по id")
+    @DisplayName("жанр должен удаляться по id")
     @Test
-    void personShouldBeDeleted() {
+    void genreShouldBeDeleted() {
         Genre newGenre = genreDao.insert(new Genre("new_genre"));
         assertTrue(genreDao.deleteById(newGenre.getId()));
         assertFalse(genreDao.deleteById(newGenre.getId()));
     }
 
-    private static final int DEFAULT_REPOSITORY_SIZE = 2;
+    private static final int DEFAULT_REPOSITORY_SIZE = 3;
 }

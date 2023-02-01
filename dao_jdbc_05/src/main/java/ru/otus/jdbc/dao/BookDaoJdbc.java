@@ -35,12 +35,12 @@ public class BookDaoJdbc implements BookDao {
                 keyHolder);
         long id = keyHolder.getKey().longValue();
         book.setId(id);
-        return getById(id).orElseThrow();
+        return book;
     }
 
     @Override
     public Book update(Book book) {
-        operations.update("update books set name = :name, author_id = :author_id, genre_id = :genre_id",
+        operations.update("update books set name = :name, author_id = :author_id, genre_id = :genre_id where id = :id",
                 getParamSource(book));
         return getById(book.getId()).orElseThrow();
     }

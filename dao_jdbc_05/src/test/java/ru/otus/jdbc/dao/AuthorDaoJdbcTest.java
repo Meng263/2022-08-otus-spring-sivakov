@@ -20,9 +20,9 @@ class AuthorDaoJdbcTest {
     @Autowired
     private AuthorDaoJdbc authorDao;
 
-    @DisplayName("возвращать ожидаемое количество пёрсонов в БД")
+    @DisplayName("возвращать ожидаемое количество авторов в БД")
     @Test
-    void shouldReturnExpectedPersonCount() {
+    void shouldReturnExpectedAuthorCount() {
         long actualPersonsCount = authorDao.count();
         assertThat(actualPersonsCount).isEqualTo(DEFAULT_REPOSITORY_SIZE);
     }
@@ -36,18 +36,18 @@ class AuthorDaoJdbcTest {
         assertEquals(newAuthor.getName(), authorName);
     }
 
-    @DisplayName("должен корректно возвращать список пользователей")
+    @DisplayName("должен корректно возвращать список авторов")
     @Test
-    void listPersonsShouldBeReturnedCorrect() {
+    void listAuthorsShouldBeReturnedCorrect() {
         List<Author> authors = authorDao.getAll();
         assertEquals(authors.size(), DEFAULT_REPOSITORY_SIZE);
         assertEquals(authors.get(0).getName(), "PUSHKIN");
         assertEquals(authors.get(1).getName(), "LERMONTOV");
     }
 
-    @DisplayName("пользователь должен корректно обновляться")
+    @DisplayName("автор должен корректно обновляться")
     @Test
-    void personShouldBeUpdatedCorrect() {
+    void authorShouldBeUpdatedCorrect() {
         Author newAuthor = authorDao.insert(new Author("new_author"));
         long authorId = newAuthor.getId();
         Author forUpdate = new Author(authorId, "updated name");
@@ -59,9 +59,9 @@ class AuthorDaoJdbcTest {
         assertEquals(author.getName(), forUpdate.getName());
     }
 
-    @DisplayName("должен корректно возвращать пользователя по id")
+    @DisplayName("должен корректно возвращать автора по id")
     @Test
-    void personShouldBeReturnedById() {
+    void authorShouldBeReturnedById() {
         int pushkinId = 10;
         Optional<Author> optional = authorDao.getById(pushkinId);
         assertTrue(optional.isPresent());
@@ -70,13 +70,13 @@ class AuthorDaoJdbcTest {
         assertEquals(author.getId(), pushkinId);
     }
 
-    @DisplayName("пользователь должен удаляться по id")
+    @DisplayName("автор должен удаляться по id")
     @Test
-    void personShouldBeDeleted() {
+    void authorShouldBeDeleted() {
         Author newAuthor = authorDao.insert(new Author("new_author"));
         assertTrue(authorDao.deleteById(newAuthor.getId()));
         assertFalse(authorDao.deleteById(newAuthor.getId()));
     }
 
-    private static final int DEFAULT_REPOSITORY_SIZE = 2;
+    private static final int DEFAULT_REPOSITORY_SIZE = 3;
 }
