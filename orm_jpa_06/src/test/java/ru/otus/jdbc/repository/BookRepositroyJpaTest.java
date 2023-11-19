@@ -1,9 +1,9 @@
-package ru.otus.jdbc.dao;
+package ru.otus.jdbc.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.jdbc.model.Author;
 import ru.otus.jdbc.model.Book;
@@ -15,12 +15,12 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@JdbcTest
-@Import(BookDaoJdbc.class)
-class BookDaoJdbcTest {
+@DataJpaTest
+@Import(BookRepositoryJpa.class)
+class BookRepositroyJpaTest {
 
     @Autowired
-    private BookDaoJdbc bookDao;
+    private BookRepositoryJpa bookRepository;
 
     Author authorHelper = new Author(100, "author_helper");
     Genre genreHelper = new Genre(100, "genre_helper");
@@ -28,7 +28,7 @@ class BookDaoJdbcTest {
     @DisplayName("возвращать ожидаемое количество книг в БД")
     @Test
     void shouldReturnExpectedBookCount() {
-        long actualPersonsCount = bookDao.count();
+        long actualPersonsCount = bookRepository.count();
         assertThat(actualPersonsCount).isEqualTo(DEFAULT_REPOSITORY_SIZE);
     }
 
@@ -36,7 +36,13 @@ class BookDaoJdbcTest {
     @Test
     void shouldBookBeAdded() {
         String bookName = "new bookName";
-        Book newBook = bookDao.insert(new Book(bookName, authorHelper, genreHelper));
+        Book initBook = Book.builder()
+                .name(bookName)
+                .author(authorHelper)
+                .genre(genreHelper)
+                .build();
+
+        Book newBook = bookRepository.save(initBook);
         assertNotEquals(newBook.getId(), 0L);
         assertEquals(newBook.getName(), bookName);
     }
@@ -44,7 +50,7 @@ class BookDaoJdbcTest {
     @DisplayName("должен корректно возвращать список книг")
     @Test
     void listBooksShouldBeReturnedCorrect() {
-        List<Book> books = bookDao.getAll();
+        List<Book> books = bookRepository.getAll();
         assertEquals(books.size(), DEFAULT_REPOSITORY_SIZE);
         assertEquals(books.get(0).getName(), "RUSALKA");
         assertEquals(books.get(1).getName(), "MASQARAD");
@@ -53,11 +59,16 @@ class BookDaoJdbcTest {
     @DisplayName("книга должен корректно обновляться")
     @Test
     void bookShouldBeUpdatedCorrect() {
-        Book newBook = bookDao.getById(10L).orElseThrow();
+        Book newBook = bookRepository.getById(10L).orElseThrow();
         long newBookId = newBook.getId();
-        Book forUpdate = new Book(newBookId, "updated name", authorHelper, genreHelper);
-        bookDao.update(forUpdate);
-        Optional<Book> optional = bookDao.getById(newBookId);
+        Book forUpdate = Book.builder()
+                .id(newBookId)
+                .name("updated name")
+                .author(authorHelper)
+                .genre(genreHelper)
+                .build();
+        bookRepository.save(forUpdate);
+        Optional<Book> optional = bookRepository.getById(newBookId);
         assertTrue(optional.isPresent());
         Book author = optional.get();
         assertEquals(author.getId(), newBookId);
@@ -70,7 +81,7 @@ class BookDaoJdbcTest {
     @Test
     void bookShouldBeReturnedById() {
         int rusalkaId = 10;
-        Optional<Book> optional = bookDao.getById(rusalkaId);
+        Optional<Book> optional = bookRepository.getById(rusalkaId);
         assertTrue(optional.isPresent());
         Book author = optional.get();
         assertEquals(author.getName(), "RUSALKA");
@@ -81,8 +92,8 @@ class BookDaoJdbcTest {
     @Test
     void bookShouldBeDeleted() {
         int rusalkaId = 10;
-        assertTrue(bookDao.deleteById(rusalkaId));
-        assertFalse(bookDao.deleteById(rusalkaId));
+        assertTrue(bookRepository.deleteById(rusalkaId));
+        assertFalse(bookRepository.deleteById(rusalkaId));
     }
 
     private static final int DEFAULT_REPOSITORY_SIZE = 2;

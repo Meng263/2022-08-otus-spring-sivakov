@@ -3,12 +3,12 @@ package ru.otus.jdbc.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.jdbc.dao.AuthorDao;
+import ru.otus.jdbc.repository.AuthorRepository;
 
 @ShellComponent
 @RequiredArgsConstructor
 public class AuthorShellCommand {
-    private final AuthorDao authorDao;
+    private final AuthorRepository authorDao;
 
     @ShellMethod(key = "authors-count", value = "Получить количество всех авторов в БД")
     public String getAllAuthorsCount() {

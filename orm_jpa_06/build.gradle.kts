@@ -17,10 +17,10 @@ repositories {
 }
 
 dependencies {
-    val springVersion = "2.7.6"
+    val springVersion = "2.7.17"
     implementation("org.springframework.boot:spring-boot-starter:$springVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springVersion")
-    implementation("org.springframework.shell:spring-shell-starter:2.1.3")
+    implementation("org.springframework.shell:spring-shell-starter:2.1.14")
     implementation("com.h2database:h2:2.1.212")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

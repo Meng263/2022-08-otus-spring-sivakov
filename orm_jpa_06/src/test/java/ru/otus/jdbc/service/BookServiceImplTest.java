@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.jdbc.dao.AuthorDao;
-import ru.otus.jdbc.dao.BookDao;
-import ru.otus.jdbc.dao.GenreDao;
 import ru.otus.jdbc.model.Author;
 import ru.otus.jdbc.model.Book;
 import ru.otus.jdbc.model.Genre;
+import ru.otus.jdbc.repository.AuthorRepository;
+import ru.otus.jdbc.repository.BookRepository;
+import ru.otus.jdbc.repository.GenreRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +24,12 @@ import static org.mockito.Mockito.verify;
 class BookServiceImplTest {
 
     @MockBean
-    private BookDao bookDao;
+    private BookRepository bookRepository;
     @MockBean
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
 
     @MockBean
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @Autowired
     private BookServiceImpl bookService;
@@ -39,11 +39,11 @@ class BookServiceImplTest {
     void shouldReturnExpectedBooksCount() {
         long expectedCount = 2;
 
-        given(bookDao.count()).willReturn(expectedCount);
+        given(bookRepository.count()).willReturn(expectedCount);
         var actualBooksCount = bookService.getCount();
 
         assertEquals(actualBooksCount, expectedCount);
-        verify(bookDao, times(1)).count();
+        verify(bookRepository, times(1)).count();
     }
 
 
@@ -52,12 +52,21 @@ class BookServiceImplTest {
     void shouldBookBeAdded() {
         Author authorHelper = new Author(10, "helper_auhtor");
         Genre genreHelper = new Genre(10, "helper_genre");
-        Book book = new Book("book name", authorHelper, genreHelper);
-        Book bookWithId = new Book(10,"book name", authorHelper, genreHelper);
-        given(authorDao.getById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
-        given(genreDao.getById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
-        given(bookDao.getById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
-        given(bookDao.insert(book)).willReturn(bookWithId);
+        Book book = Book.builder().name("book name")
+                .author(authorHelper)
+                .genre(genreHelper)
+                .build();
+
+        Book bookWithId = Book.builder().id(10)
+                .name("book name")
+                .author(authorHelper)
+                .genre(genreHelper)
+                .build();
+
+        given(authorRepository.getById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
+        given(genreRepository.getById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
+        given(bookRepository.getById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
+        given(bookRepository.save(book)).willReturn(bookWithId);
 
         Book newBook = bookService.addBook(book.getName(), authorHelper.getId(), genreHelper.getId());
         assertNotEquals(newBook.getId(), 0L);
@@ -69,8 +78,14 @@ class BookServiceImplTest {
     @DisplayName("должен корректно возвращать список книг")
     @Test
     void listBooksShouldBeReturnedCorrect() {
-        List<Book> bookList = List.of(new Book("Pikovaja Dama", new Author("Puskin"), new Genre("Drama")));
-        given(bookDao.getAll()).willReturn(bookList);
+        Author author = Author.builder().name("Puskin").build();
+        Genre genre = Genre.builder().name("Drama").build();
+        Book book = Book.builder().name("Pikovaja Dama")
+                .author(author)
+                .genre(genre)
+                .build();
+        List<Book> bookList = List.of(book);
+        given(bookRepository.getAll()).willReturn(bookList);
 
         assertEquals(bookService.getAll(), bookList);
     }
@@ -85,12 +100,12 @@ class BookServiceImplTest {
         Book book = new Book(10, "book", firstAuthor, firstGenre);
         String newBookName = "newBookName";
         Book newBook = new Book(10, newBookName, secondAuthor, secondGenre);
-        given(authorDao.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
-        given(authorDao.getById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
-        given(genreDao.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
-        given(genreDao.getById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
-        given(bookDao.update(newBook)).willReturn(newBook);
-        given(bookDao.getById(newBook.getId())).willReturn(Optional.of(newBook));
+        given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
+        given(authorRepository.getById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
+        given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
+        given(genreRepository.getById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
+        given(bookRepository.save(newBook)).willReturn(newBook);
+        given(bookRepository.getById(newBook.getId())).willReturn(Optional.of(newBook));
 
         Book updatedBook = bookService.changeBook(book.getId(), newBookName, secondAuthor.getId(), secondGenre.getId());
         assertEquals(updatedBook.getId(), book.getId());
@@ -105,9 +120,9 @@ class BookServiceImplTest {
         Author firstAuthor = new Author(10, "first_auhtor");
         Genre firstGenre = new Genre(10, "fist_genre");
         Book book = new Book(10, "book", firstAuthor, firstGenre);
-        given(authorDao.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
-        given(genreDao.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
-        given(bookDao.getById(book.getId())).willReturn(Optional.of(book));
+        given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
+        given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
+        given(bookRepository.getById(book.getId())).willReturn(Optional.of(book));
 
         Book gettedBook = bookService.findBookById(book.getId());
         assertEquals(gettedBook.getId(), book.getId());
@@ -122,10 +137,10 @@ class BookServiceImplTest {
         Author firstAuthor = new Author(10, "first_auhtor");
         Genre firstGenre = new Genre(10, "fist_genre");
         Book book = new Book(10, "book", firstAuthor, firstGenre);
-        given(bookDao.deleteById(book.getId())).willReturn(true).willReturn(false);
+        given(bookRepository.deleteById(book.getId())).willReturn(true).willReturn(false);
 
         assertTrue(bookService.deleteBookById(book.getId()));
         assertFalse(bookService.deleteBookById(book.getId()));
-        verify(bookDao, times(2)).deleteById(book.getId());
+        verify(bookRepository, times(2)).deleteById(book.getId());
     }
 }

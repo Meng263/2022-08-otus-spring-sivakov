@@ -20,7 +20,6 @@ public class BookComment {
     private String text;
 
     @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
-    @Column(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
     private Book book;
 }

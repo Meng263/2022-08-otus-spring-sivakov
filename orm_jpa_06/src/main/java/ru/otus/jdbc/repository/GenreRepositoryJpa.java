@@ -2,6 +2,7 @@ package ru.otus.jdbc.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.jdbc.model.Genre;
 
 import javax.persistence.EntityManager;
@@ -18,7 +19,7 @@ public class GenreRepositoryJpa implements GenreRepository {
 
     @Override
     public long count() {
-        return entityManager.createQuery("select count(*) from Book", Long.class)
+        return entityManager.createQuery("select count(*) from Genre", Long.class)
                 .getSingleResult();
     }
 

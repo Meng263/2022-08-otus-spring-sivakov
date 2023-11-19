@@ -20,3 +20,11 @@ CREATE TABLE BOOKS
     author_id bigint references AUTHORS (id),
     genre_id  bigint references GENRES (id)
 );
+
+DROP TABLE IF EXISTS COMMENTS;
+CREATE TABLE COMMENTS
+(
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    text    VARCHAR(255) NOT NULL,
+    book_id bigint references BOOKS (id)
+);
