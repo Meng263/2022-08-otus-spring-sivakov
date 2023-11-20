@@ -22,8 +22,8 @@ class BookRepositroyJpaTest {
     @Autowired
     private BookRepositoryJpa bookRepository;
 
-    Author authorHelper = new Author(100, "author_helper");
-    Genre genreHelper = new Genre(100, "genre_helper");
+    private final Author authorHelper = new Author(100, "author_helper");
+    private final Genre genreHelper = new Genre(100, "genre_helper");
 
     @DisplayName("возвращать ожидаемое количество книг в БД")
     @Test
