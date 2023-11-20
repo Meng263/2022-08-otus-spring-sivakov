@@ -8,11 +8,11 @@ import ru.otus.jdbc.repository.AuthorRepository;
 @ShellComponent
 @RequiredArgsConstructor
 public class AuthorShellCommand {
-    private final AuthorRepository authorDao;
+    private final AuthorRepository authorRepository;
 
     @ShellMethod(key = "authors-count", value = "Получить количество всех авторов в БД")
     public String getAllAuthorsCount() {
-        var count = authorDao.count();
+        var count = authorRepository.count();
         return String.format("Количество авторов в БД: %d", count);
     }
 }

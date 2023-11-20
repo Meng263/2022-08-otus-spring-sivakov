@@ -24,4 +24,8 @@ public class BookComment {
     @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
     private Book book;
+
+    public String toShortString() {
+        return "Comment(id=" + getId() + ", commentText=" + getText() + ")";
+    }
 }

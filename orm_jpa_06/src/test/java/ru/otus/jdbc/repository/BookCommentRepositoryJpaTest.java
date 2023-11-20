@@ -49,7 +49,7 @@ public class BookCommentRepositoryJpaTest {
         assertEquals(authors.get(1).getText(), "COMMENT2");
     }
 
-    @DisplayName("комент должен корректно обновляться")
+    @DisplayName("коммент должен корректно обновляться")
     @Test
     void authorShouldBeUpdatedCorrect() {
         BookComment bookComment = BookComment.builder().text("init text").book(bookHelper).build();
