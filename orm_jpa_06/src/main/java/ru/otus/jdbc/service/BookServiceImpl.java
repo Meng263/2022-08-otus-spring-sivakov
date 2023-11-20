@@ -24,6 +24,21 @@ public class BookServiceImpl implements BookService {
         return bookRepository.count();
     }
 
+    @Override
+    @Transactional
+    public Book changeBook(long id, String name, long authorId, long genreId) {
+        Author author = authorRepository.getById(authorId).orElseThrow();
+        Genre genre = genreRepository.getById(genreId).orElseThrow();
+        Book book = Book.builder()
+                .id(id)
+                .name(name)
+                .author(author)
+                .genre(genre)
+                .build();
+        bookRepository.save(book);
+        return bookRepository.getById(id).orElseThrow();
+    }
+
     @Transactional
     @Override
     public Book addBook(String name, long authorId, long genreId) {
@@ -40,30 +55,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book changeBook(long id, String name, long authorId, long genreId) {
-        Author author = authorRepository.getById(authorId).orElseThrow();
-        Genre genre = genreRepository.getById(genreId).orElseThrow();
-        Book book = Book.builder()
-                .id(id)
-                .name(name)
-                .author(author)
-                .genre(genre)
-                .build();
-        bookRepository.save(book);
-        return bookRepository.getById(id).orElseThrow();
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public Book findBookById(long id) {
         return bookRepository.getById(id).orElseThrow();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Book> getAll() {
         return bookRepository.getAll();
     }
 
     @Override
+    @Transactional
     public boolean deleteBookById(long id) {
         return bookRepository.deleteById(id);
     }
