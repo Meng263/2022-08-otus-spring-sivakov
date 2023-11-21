@@ -14,3 +14,5 @@ insert into COMMENTS(id, text, book_id) values (10, 'COMMENT1', 10);
 insert into COMMENTS(id, text, book_id) values (20, 'COMMENT2', 20);
 insert into COMMENTS(id, text, book_id) values (30, 'COMMENT3', 20);
 insert into COMMENTS(id, text, book_id) values (40, 'COMMENT4', 20);
+insert into COMMENTS(id, text, book_id) values (50, 'COMMENT5', 100);
+insert into COMMENTS(id, text, book_id) values (60, 'COMMENT6', 100);

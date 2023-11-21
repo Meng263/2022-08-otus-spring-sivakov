@@ -82,7 +82,7 @@ class GenreRepositoryTest {
         assertFalse(genreRepository.deleteById(newGenre.getId()));
     }
 
-    @DisplayName("должны находить книгу по имени")
+    @DisplayName("должны находить жанр по имени")
     @Test
     void authorShouldBeFoundByName() {
         String name = "HORROR";

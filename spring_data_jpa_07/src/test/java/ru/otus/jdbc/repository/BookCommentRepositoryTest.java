@@ -3,10 +3,12 @@ package ru.otus.jdbc.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import ru.otus.jdbc.model.Book;
 import ru.otus.jdbc.model.BookComment;
+import ru.otus.jdbc.model.Genre;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(CommentRepositoryJpa.class)
-public class BookCommentRepositoryJpaTest {
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+public class BookCommentRepositoryTest {
 
     @Autowired
-    private CommentRepositoryJpa commentRepository;
+    private CommentRepository commentRepository;
 
     private final Book bookHelper = Book.builder().id(100).name("book helper").build();
 
@@ -43,7 +45,7 @@ public class BookCommentRepositoryJpaTest {
     @DisplayName("должен корректно возвращать список коментов")
     @Test
     void listAuthorsShouldBeReturnedCorrect() {
-        List<BookComment> authors = commentRepository.getAll();
+        List<BookComment> authors = commentRepository.findAll();
         assertEquals(authors.size(), DEFAULT_REPOSITORY_SIZE);
         assertEquals(authors.get(0).getText(), "COMMENT1");
         assertEquals(authors.get(1).getText(), "COMMENT2");
@@ -58,7 +60,7 @@ public class BookCommentRepositoryJpaTest {
 
         BookComment commentForUpdate = BookComment.builder().id(commentId).text("updated text").book(bookHelper).build();
         commentRepository.save(commentForUpdate);
-        Optional<BookComment> optional = commentRepository.getById(commentId);
+        Optional<BookComment> optional = commentRepository.findById(commentId);
         assertTrue(optional.isPresent());
         BookComment comment = optional.get();
         assertEquals(comment.getId(), commentId);
@@ -68,8 +70,8 @@ public class BookCommentRepositoryJpaTest {
     @DisplayName("должен корректно возвращать автора по id")
     @Test
     void authorShouldBeReturnedById() {
-        int firstCommentId = 10;
-        Optional<BookComment> firstCommentOptional = commentRepository.getById(firstCommentId);
+        long firstCommentId = 10;
+        Optional<BookComment> firstCommentOptional = commentRepository.findById(firstCommentId);
         assertTrue(firstCommentOptional.isPresent());
         BookComment comment = firstCommentOptional.get();
         assertEquals(comment.getText(), "COMMENT1");
@@ -85,6 +87,26 @@ public class BookCommentRepositoryJpaTest {
         assertFalse(commentRepository.deleteById(savedComment.getId()));
     }
 
-    private static final int DEFAULT_REPOSITORY_SIZE = 4;
+    @DisplayName("должны находить все комменты книги")
+    @Test
+    void authorShouldBeFoundByName() {
+        String name = "HORROR";
+        List<BookComment> comments = commentRepository.findByBook(bookHelper);
+        assertThat(comments).hasSize(2);
+        comments.forEach(comment -> assertEquals(bookHelper.getId(), comment.getBook().getId()));
+        assertEquals("COMMENT5",comments.get(0).getText());
+        assertEquals("COMMENT6",comments.get(1).getText());
+    }
+
+    @DisplayName("Должны удалить всех и получить их количество")
+    @Test
+    void authorsShouldBeRemovedAndReturnsCount() {
+        long count = commentRepository.deleteAllWithCounter();
+        assertEquals(DEFAULT_REPOSITORY_SIZE, count);
+        long countAfterRemoveAll = commentRepository.count();
+        assertThat(countAfterRemoveAll).isZero();
+    }
+
+    private static final int DEFAULT_REPOSITORY_SIZE = 6;
 
 }
