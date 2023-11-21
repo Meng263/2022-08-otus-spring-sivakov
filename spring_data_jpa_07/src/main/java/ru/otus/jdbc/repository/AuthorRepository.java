@@ -6,18 +6,6 @@ import ru.otus.jdbc.model.Author;
 import java.util.List;
 import java.util.Optional;
 
-public interface AuthorRepository extends JpaRepository<Author, Long> {
-    long count();
-
-    Author save(Author author);
-
-    Optional<Author> getById(long id);
-
-    Optional<Author> getByName(String name);
-
-    List<Author> getAll();
-
-    boolean deleteById(long id);
-
-    long deleteAll();
+public interface AuthorRepository extends JpaRepository<Author, Long>, AuthorRepositoryCustom {
+    Optional<Author> findByName(String name);
 }

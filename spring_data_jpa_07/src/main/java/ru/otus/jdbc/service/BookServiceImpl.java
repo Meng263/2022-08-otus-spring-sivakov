@@ -27,7 +27,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book changeBook(long id, String name, long authorId, long genreId) {
-        Author author = authorRepository.getById(authorId).orElseThrow();
+        Author author = authorRepository.findById(authorId).orElseThrow();
         Genre genre = genreRepository.getById(genreId).orElseThrow();
         Book book = Book.builder()
                 .id(id)
@@ -42,7 +42,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public Book addBook(String name, long authorId, long genreId) {
-        Author author = authorRepository.getById(authorId).orElseThrow();
+        Author author = authorRepository.findById(authorId).orElseThrow();
         Genre genre = genreRepository.getById(genreId).orElseThrow();
         Book book = Book.builder()
                 .name(name)

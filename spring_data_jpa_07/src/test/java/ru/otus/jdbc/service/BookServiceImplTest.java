@@ -63,7 +63,7 @@ class BookServiceImplTest {
                 .genre(genreHelper)
                 .build();
 
-        given(authorRepository.getById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
+        given(authorRepository.findById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
         given(genreRepository.getById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
         given(bookRepository.getById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
         given(bookRepository.save(book)).willReturn(bookWithId);
@@ -100,8 +100,8 @@ class BookServiceImplTest {
         Book book = new Book(10, "book", firstAuthor, firstGenre);
         String newBookName = "newBookName";
         Book newBook = new Book(10, newBookName, secondAuthor, secondGenre);
-        given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
-        given(authorRepository.getById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
+        given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
+        given(authorRepository.findById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
         given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
         given(genreRepository.getById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
         given(bookRepository.save(newBook)).willReturn(newBook);
@@ -120,7 +120,7 @@ class BookServiceImplTest {
         Author firstAuthor = new Author(10, "first_auhtor");
         Genre firstGenre = new Genre(10, "fist_genre");
         Book book = new Book(10, "book", firstAuthor, firstGenre);
-        given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
+        given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
         given(bookRepository.getById(book.getId())).willReturn(Optional.of(book));
 

@@ -16,11 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(AuthorRepositoryJpa.class)
+@Import(AuthorRepository.class)
 class AuthorRepositoryJpaTest {
 
     @Autowired
-    private AuthorRepositoryJpa authorRepository;
+    private AuthorRepository authorRepository;
 
     @DisplayName("возвращать ожидаемое количество авторов в БД")
     @Test
@@ -42,7 +42,7 @@ class AuthorRepositoryJpaTest {
     @DisplayName("должен корректно возвращать список авторов")
     @Test
     void listAuthorsShouldBeReturnedCorrect() {
-        List<Author> authors = authorRepository.getAll();
+        List<Author> authors = authorRepository.findAll();
         assertEquals(authors.size(), DEFAULT_REPOSITORY_SIZE);
         assertEquals(authors.get(0).getName(), "PUSHKIN");
         assertEquals(authors.get(1).getName(), "LERMONTOV");
@@ -56,7 +56,7 @@ class AuthorRepositoryJpaTest {
         long authorId = newAuthor.getId();
         Author forUpdate = new Author(authorId, "updated name");
         authorRepository.save(forUpdate);
-        Optional<Author> optional = authorRepository.getById(authorId);
+        Optional<Author> optional = authorRepository.findById(authorId);
         assertTrue(optional.isPresent());
         Author author = optional.get();
         assertEquals(author.getId(), authorId);
@@ -66,8 +66,8 @@ class AuthorRepositoryJpaTest {
     @DisplayName("должен корректно возвращать автора по id")
     @Test
     void authorShouldBeReturnedById() {
-        int pushkinId = 10;
-        Optional<Author> optional = authorRepository.getById(pushkinId);
+        long pushkinId = 10;
+        Optional<Author> optional = authorRepository.findById(pushkinId);
         assertTrue(optional.isPresent());
         Author author = optional.get();
         assertEquals(author.getName(), "PUSHKIN");
