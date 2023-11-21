@@ -1,22 +1,12 @@
 package ru.otus.jdbc.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.otus.jdbc.model.Book;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface BookRepository {
-    long count();
-
-    Book save(Book book);
-
-    Optional<Book> getById(long id);
-
-    Optional<Book> getByName(String name);
-
-    List<Book> getAll();
-
-    boolean deleteById(long id);
-
-    long deleteAll();
+@Repository
+public interface BookRepository extends JpaRepository<Book, Long>, BookRepositoryCustom {
+    Optional<Book> findByName(String name);
 }

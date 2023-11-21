@@ -65,7 +65,7 @@ class BookServiceImplTest {
 
         given(authorRepository.findById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
         given(genreRepository.getById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
-        given(bookRepository.getById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
+        given(bookRepository.findById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
         given(bookRepository.save(book)).willReturn(bookWithId);
 
         Book newBook = bookService.addBook(book.getName(), authorHelper.getId(), genreHelper.getId());
@@ -85,7 +85,7 @@ class BookServiceImplTest {
                 .genre(genre)
                 .build();
         List<Book> bookList = List.of(book);
-        given(bookRepository.getAll()).willReturn(bookList);
+        given(bookRepository.findAll()).willReturn(bookList);
 
         assertEquals(bookService.getAll(), bookList);
     }
@@ -105,7 +105,7 @@ class BookServiceImplTest {
         given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
         given(genreRepository.getById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
         given(bookRepository.save(newBook)).willReturn(newBook);
-        given(bookRepository.getById(newBook.getId())).willReturn(Optional.of(newBook));
+        given(bookRepository.findById(newBook.getId())).willReturn(Optional.of(newBook));
 
         Book updatedBook = bookService.changeBook(book.getId(), newBookName, secondAuthor.getId(), secondGenre.getId());
         assertEquals(updatedBook.getId(), book.getId());
@@ -122,7 +122,7 @@ class BookServiceImplTest {
         Book book = new Book(10, "book", firstAuthor, firstGenre);
         given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
-        given(bookRepository.getById(book.getId())).willReturn(Optional.of(book));
+        given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
 
         Book gettedBook = bookService.findBookById(book.getId());
         assertEquals(gettedBook.getId(), book.getId());

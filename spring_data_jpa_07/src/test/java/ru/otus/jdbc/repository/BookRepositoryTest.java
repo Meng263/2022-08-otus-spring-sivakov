@@ -3,8 +3,9 @@ package ru.otus.jdbc.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import ru.otus.jdbc.model.Author;
 import ru.otus.jdbc.model.Book;
 import ru.otus.jdbc.model.Genre;
@@ -16,11 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(BookRepositoryJpa.class)
-class BookRepositroyJpaTest {
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+class BookRepositoryTest {
 
     @Autowired
-    private BookRepositoryJpa bookRepository;
+    private BookRepository bookRepository;
 
     private final Author authorHelper = new Author(100, "author_helper");
     private final Genre genreHelper = new Genre(100, "genre_helper");
@@ -50,7 +51,7 @@ class BookRepositroyJpaTest {
     @DisplayName("должен корректно возвращать список книг")
     @Test
     void listBooksShouldBeReturnedCorrect() {
-        List<Book> books = bookRepository.getAll();
+        List<Book> books = bookRepository.findAll();
         assertEquals(books.size(), DEFAULT_REPOSITORY_SIZE);
         assertEquals(books.get(0).getName(), "RUSALKA");
         assertEquals(books.get(1).getName(), "MASQARAD");
@@ -59,7 +60,7 @@ class BookRepositroyJpaTest {
     @DisplayName("книга должен корректно обновляться")
     @Test
     void bookShouldBeUpdatedCorrect() {
-        Book newBook = bookRepository.getById(10L).orElseThrow();
+        Book newBook = bookRepository.findById(10L).orElseThrow();
         long newBookId = newBook.getId();
         Book forUpdate = Book.builder()
                 .id(newBookId)
@@ -68,7 +69,7 @@ class BookRepositroyJpaTest {
                 .genre(genreHelper)
                 .build();
         bookRepository.save(forUpdate);
-        Optional<Book> optional = bookRepository.getById(newBookId);
+        Optional<Book> optional = bookRepository.findById(newBookId);
         assertTrue(optional.isPresent());
         Book author = optional.get();
         assertEquals(author.getId(), newBookId);
@@ -80,8 +81,8 @@ class BookRepositroyJpaTest {
     @DisplayName("должен корректно возвращать книгу по id")
     @Test
     void bookShouldBeReturnedById() {
-        int rusalkaId = 10;
-        Optional<Book> optional = bookRepository.getById(rusalkaId);
+        long rusalkaId = 10;
+        Optional<Book> optional = bookRepository.findById(rusalkaId);
         assertTrue(optional.isPresent());
         Book author = optional.get();
         assertEquals(author.getName(), "RUSALKA");
@@ -96,5 +97,5 @@ class BookRepositroyJpaTest {
         assertFalse(bookRepository.deleteById(rusalkaId));
     }
 
-    private static final int DEFAULT_REPOSITORY_SIZE = 2;
+    private static final int DEFAULT_REPOSITORY_SIZE = 3;
 }

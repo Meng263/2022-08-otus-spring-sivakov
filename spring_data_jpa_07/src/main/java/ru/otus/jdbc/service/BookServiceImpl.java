@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
                 .genre(genre)
                 .build();
         bookRepository.save(book);
-        return bookRepository.getById(id).orElseThrow();
+        return bookRepository.findById(id).orElseThrow();
     }
 
     @Transactional
@@ -51,19 +51,19 @@ public class BookServiceImpl implements BookService {
                 .build();
 
         Book inserted = bookRepository.save(book);
-        return bookRepository.getById(inserted.getId()).orElseThrow();
+        return bookRepository.findById(inserted.getId()).orElseThrow();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Book findBookById(long id) {
-        return bookRepository.getById(id).orElseThrow();
+        return bookRepository.findById(id).orElseThrow();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAll() {
-        return bookRepository.getAll();
+        return bookRepository.findAll();
     }
 
     @Override

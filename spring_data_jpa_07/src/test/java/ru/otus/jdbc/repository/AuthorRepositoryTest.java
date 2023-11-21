@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-class AuthorRepositoryJpaTest {
+class AuthorRepositoryTest {
 
     @Autowired()
     private AuthorRepository authorRepository;
