@@ -64,7 +64,7 @@ class BookServiceImplTest {
                 .build();
 
         given(authorRepository.findById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
-        given(genreRepository.getById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
+        given(genreRepository.findById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
         given(bookRepository.findById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
         given(bookRepository.save(book)).willReturn(bookWithId);
 
@@ -102,8 +102,8 @@ class BookServiceImplTest {
         Book newBook = new Book(10, newBookName, secondAuthor, secondGenre);
         given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(authorRepository.findById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
-        given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
-        given(genreRepository.getById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
+        given(genreRepository.findById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
+        given(genreRepository.findById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
         given(bookRepository.save(newBook)).willReturn(newBook);
         given(bookRepository.findById(newBook.getId())).willReturn(Optional.of(newBook));
 
@@ -121,7 +121,7 @@ class BookServiceImplTest {
         Genre firstGenre = new Genre(10, "fist_genre");
         Book book = new Book(10, "book", firstAuthor, firstGenre);
         given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
-        given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
+        given(genreRepository.findById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
         given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
 
         Book gettedBook = bookService.findBookById(book.getId());
