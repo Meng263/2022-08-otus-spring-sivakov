@@ -3,10 +3,9 @@ package ru.otus.jdbc.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
 import ru.otus.jdbc.model.Author;
 
 import java.util.List;
@@ -16,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(AuthorRepository.class)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class AuthorRepositoryJpaTest {
 
-    @Autowired
+    @Autowired()
     private AuthorRepository authorRepository;
 
     @DisplayName("возвращать ожидаемое количество авторов в БД")
@@ -81,6 +80,27 @@ class AuthorRepositoryJpaTest {
         Author newAuthor = authorRepository.save(initAuthor);
         assertTrue(authorRepository.deleteById(newAuthor.getId()));
         assertFalse(authorRepository.deleteById(newAuthor.getId()));
+    }
+
+    @DisplayName("должны находить автора по имени")
+    @Test
+    void authorShouldBeFoundByName() {
+        String name = "LERMONTOV";
+        Optional<Author> optionalAuthor = authorRepository.findByName(name);
+        assertThat(optionalAuthor).isPresent();
+        Author author = optionalAuthor.get();
+        assertThat(author).isNotNull();
+        assertEquals(name, author.getName());
+        assertNotEquals(0, author.getId());
+    }
+
+    @DisplayName("Должны удалить всех и получить их количество")
+    @Test
+    void authorsShouldBeRemovedAndReturnsCount() {
+        long count = authorRepository.deleteAllWithCounter();
+        assertEquals(DEFAULT_REPOSITORY_SIZE, count);
+        long countAfterRemoveAll = authorRepository.count();
+        assertThat(countAfterRemoveAll).isZero();
     }
 
     private static final int DEFAULT_REPOSITORY_SIZE = 3;

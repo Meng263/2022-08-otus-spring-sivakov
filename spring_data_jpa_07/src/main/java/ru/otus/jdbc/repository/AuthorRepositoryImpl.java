@@ -2,26 +2,22 @@ package ru.otus.jdbc.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.jdbc.model.Author;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Optional;
+import javax.persistence.Query;
 
 @Repository
 @RequiredArgsConstructor
-public class AuthorRepositoryCustomImpl implements AuthorRepositoryCustom {
+public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
     @PersistenceContext
     private final EntityManager entityManager;
 
-    private final AuthorRepository authorRepository;
-
     @Override
     public boolean deleteById(long id) {
-        return authorRepository.findById(id).map(author -> {
-            entityManager.remove(author);
-            return !entityManager.contains(author);
-        }).orElse(false);
+        Query query = entityManager.createQuery("delete from Author where id = :id");
+        query.setParameter("id", id);
+        return query.executeUpdate() == 1;
     }
 
     @Override
