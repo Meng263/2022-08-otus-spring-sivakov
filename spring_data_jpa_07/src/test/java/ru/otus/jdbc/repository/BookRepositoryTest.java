@@ -97,5 +97,26 @@ class BookRepositoryTest {
         assertFalse(bookRepository.deleteById(rusalkaId));
     }
 
+    @DisplayName("должны находить книгу по имени")
+    @Test
+    void authorShouldBeFoundByName() {
+        String name = "RUSALKA";
+        Optional<Book> optionalAuthor = bookRepository.findByName(name);
+        assertThat(optionalAuthor).isPresent();
+        Book book = optionalAuthor.get();
+        assertThat(book).isNotNull();
+        assertEquals(name, book.getName());
+        assertNotEquals(0, book.getId());
+    }
+
+    @DisplayName("Должны удалить всех и получить их количество")
+    @Test
+    void authorsShouldBeRemovedAndReturnsCount() {
+        long count = bookRepository.deleteAllWithCounter();
+        assertEquals(DEFAULT_REPOSITORY_SIZE, count);
+        long countAfterRemoveAll = bookRepository.count();
+        assertThat(countAfterRemoveAll).isZero();
+    }
+
     private static final int DEFAULT_REPOSITORY_SIZE = 3;
 }
