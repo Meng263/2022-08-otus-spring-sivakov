@@ -14,8 +14,6 @@ public interface CommentRepository {
 
     Optional<BookComment> getById(long id);
 
-    List<BookComment> getAllForBook(Book book);
-
     List<BookComment> getAll();
 
     boolean deleteById(long id);

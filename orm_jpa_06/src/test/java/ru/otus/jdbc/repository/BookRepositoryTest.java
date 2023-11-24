@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import(BookRepositoryJpa.class)
-class BookRepositroyJpaTest {
+class BookRepositoryTest {
 
     @Autowired
     private BookRepositoryJpa bookRepository;
