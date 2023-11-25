@@ -23,8 +23,8 @@ class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
 
-    private final Author authorHelper = new Author(100, "author_helper");
-    private final Genre genreHelper = new Genre(100, "genre_helper");
+    private final Author authorHelper = new Author("100", "author_helper");
+    private final Genre genreHelper = new Genre("100", "genre_helper");
 
     @DisplayName("возвращать ожидаемое количество книг в БД")
     @Test
@@ -60,8 +60,8 @@ class BookRepositoryTest {
     @DisplayName("книга должен корректно обновляться")
     @Test
     void bookShouldBeUpdatedCorrect() {
-        Book newBook = bookRepository.findById(10L).orElseThrow();
-        long newBookId = newBook.getId();
+        Book newBook = bookRepository.findById("10").orElseThrow();
+        String newBookId = newBook.getId();
         Book forUpdate = Book.builder()
                 .id(newBookId)
                 .name("updated name")
@@ -81,7 +81,7 @@ class BookRepositoryTest {
     @DisplayName("должен корректно возвращать книгу по id")
     @Test
     void bookShouldBeReturnedById() {
-        long rusalkaId = 10;
+        String rusalkaId = "10";
         Optional<Book> optional = bookRepository.findById(rusalkaId);
         assertTrue(optional.isPresent());
         Book author = optional.get();
@@ -92,9 +92,9 @@ class BookRepositoryTest {
     @DisplayName("книга должена удаляться по id")
     @Test
     void bookShouldBeDeleted() {
-        int rusalkaId = 10;
-        assertTrue(bookRepository.deleteById(rusalkaId));
-        assertFalse(bookRepository.deleteById(rusalkaId));
+        String rusalkaId = "10";
+        assertTrue(bookRepository.deleteByIdBool(rusalkaId));
+        assertFalse(bookRepository.deleteByIdBool(rusalkaId));
     }
 
     @DisplayName("должны находить книгу по имени")

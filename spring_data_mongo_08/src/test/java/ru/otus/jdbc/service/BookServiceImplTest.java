@@ -50,14 +50,15 @@ class BookServiceImplTest {
     @DisplayName("Книга должна вставляться по name, author_id, genre_id")
     @Test
     void shouldBookBeAdded() {
-        Author authorHelper = new Author(10, "helper_auhtor");
-        Genre genreHelper = new Genre(10, "helper_genre");
+        Author authorHelper = new Author("10", "helper_auhtor");
+        Genre genreHelper = new Genre("10", "helper_genre");
         Book book = Book.builder().name("book name")
                 .author(authorHelper)
                 .genre(genreHelper)
                 .build();
 
-        Book bookWithId = Book.builder().id(10)
+        Book bookWithId = Book.builder()
+                .id("10")
                 .name("book name")
                 .author(authorHelper)
                 .genre(genreHelper)
@@ -93,13 +94,13 @@ class BookServiceImplTest {
     @DisplayName("книга должен корректно обновляться")
     @Test
     void bookShouldBeUpdatedCorrect() {
-        Author firstAuthor = new Author(10, "first_auhtor");
-        Author secondAuthor = new Author(20, "second_auhtor");
-        Genre firstGenre = new Genre(10, "fist_genre");
-        Genre secondGenre = new Genre(20, "second_genre");
-        Book book = new Book(10, "book", firstAuthor, firstGenre);
+        Author firstAuthor = new Author("10", "first_auhtor");
+        Author secondAuthor = new Author("20", "second_auhtor");
+        Genre firstGenre = new Genre("10", "fist_genre");
+        Genre secondGenre = new Genre("20", "second_genre");
+        Book book = new Book("10", "book", firstAuthor, firstGenre);
         String newBookName = "newBookName";
-        Book newBook = new Book(10, newBookName, secondAuthor, secondGenre);
+        Book newBook = new Book("10", newBookName, secondAuthor, secondGenre);
         given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(authorRepository.findById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
         given(genreRepository.findById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
@@ -117,9 +118,9 @@ class BookServiceImplTest {
     @DisplayName("должен корректно возвращать книгу по id")
     @Test
     void bookShouldBeReturnedById() {
-        Author firstAuthor = new Author(10, "first_auhtor");
-        Genre firstGenre = new Genre(10, "fist_genre");
-        Book book = new Book(10, "book", firstAuthor, firstGenre);
+        Author firstAuthor = new Author("10", "first_auhtor");
+        Genre firstGenre = new Genre("10", "fist_genre");
+        Book book = new Book("10", "book", firstAuthor, firstGenre);
         given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(genreRepository.findById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
         given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
@@ -134,10 +135,10 @@ class BookServiceImplTest {
     @DisplayName("книга должен удаляться по id")
     @Test
     void bookShouldBeDeleted() {
-        Author firstAuthor = new Author(10, "first_auhtor");
-        Genre firstGenre = new Genre(10, "fist_genre");
-        Book book = new Book(10, "book", firstAuthor, firstGenre);
-        given(bookRepository.deleteById(book.getId())).willReturn(true).willReturn(false);
+        Author firstAuthor = new Author("10", "first_auhtor");
+        Genre firstGenre = new Genre("10", "fist_genre");
+        Book book = new Book("10", "book", firstAuthor, firstGenre);
+        given(bookRepository.deleteByIdBool(book.getId())).willReturn(true).willReturn(false);
 
         assertTrue(bookService.deleteBookById(book.getId()));
         assertFalse(bookService.deleteBookById(book.getId()));

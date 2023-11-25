@@ -52,7 +52,7 @@ class AuthorRepositoryTest {
     void authorShouldBeUpdatedCorrect() {
         Author initAuthor = Author.builder().name("new_author").build();
         Author newAuthor = authorRepository.save(initAuthor);
-        long authorId = newAuthor.getId();
+        String authorId = newAuthor.getId();
         Author forUpdate = new Author(authorId, "updated name");
         authorRepository.save(forUpdate);
         Optional<Author> optional = authorRepository.findById(authorId);
@@ -65,7 +65,7 @@ class AuthorRepositoryTest {
     @DisplayName("должен корректно возвращать автора по id")
     @Test
     void authorShouldBeReturnedById() {
-        long pushkinId = 10;
+        String pushkinId = "10";
         Optional<Author> optional = authorRepository.findById(pushkinId);
         assertTrue(optional.isPresent());
         Author author = optional.get();
@@ -78,8 +78,8 @@ class AuthorRepositoryTest {
     void authorShouldBeDeleted() {
         Author initAuthor = Author.builder().name("new_author").build();
         Author newAuthor = authorRepository.save(initAuthor);
-        assertTrue(authorRepository.deleteById(newAuthor.getId()));
-        assertFalse(authorRepository.deleteById(newAuthor.getId()));
+        assertTrue(authorRepository.deleteByIdBool(newAuthor.getId()));
+        assertFalse(authorRepository.deleteByIdBool(newAuthor.getId()));
     }
 
     @DisplayName("должны находить автора по имени")

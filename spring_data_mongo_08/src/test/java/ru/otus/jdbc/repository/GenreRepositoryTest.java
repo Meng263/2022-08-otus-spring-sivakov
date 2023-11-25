@@ -65,7 +65,7 @@ class GenreRepositoryTest {
     @DisplayName("должен корректно возвращать жанр по id")
     @Test
     void genreShouldBeReturnedById() {
-        long horrorId = 10;
+        String horrorId = "10";
         Optional<Genre> optional = genreRepository.findById(horrorId);
         assertTrue(optional.isPresent());
         Genre genre = optional.get();
@@ -78,8 +78,8 @@ class GenreRepositoryTest {
     void genreShouldBeDeleted() {
         Genre genre = Genre.builder().name("new_genre").build();
         Genre newGenre = genreRepository.save(genre);
-        assertTrue(genreRepository.deleteById(newGenre.getId()));
-        assertFalse(genreRepository.deleteById(newGenre.getId()));
+        assertTrue(genreRepository.deleteByIdBool(newGenre.getId()));
+        assertFalse(genreRepository.deleteByIdBool(newGenre.getId()));
     }
 
     @DisplayName("должны находить жанр по имени")

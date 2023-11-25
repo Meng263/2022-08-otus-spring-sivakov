@@ -23,7 +23,7 @@ public class BookCommentRepositoryTest {
     @Autowired
     private CommentRepository commentRepository;
 
-    private final Book bookHelper = Book.builder().id(100).name("book helper").build();
+    private final Book bookHelper = Book.builder().id("100").name("book helper").build();
 
     @DisplayName("возвращать ожидаемое количество коментов в БД")
     @Test
@@ -56,7 +56,7 @@ public class BookCommentRepositoryTest {
     void authorShouldBeUpdatedCorrect() {
         BookComment bookComment = BookComment.builder().text("init text").book(bookHelper).build();
         BookComment savedComment = commentRepository.save(bookComment);
-        long commentId = savedComment.getId();
+        String commentId = savedComment.getId();
 
         BookComment commentForUpdate = BookComment.builder().id(commentId).text("updated text").book(bookHelper).build();
         commentRepository.save(commentForUpdate);
@@ -70,7 +70,7 @@ public class BookCommentRepositoryTest {
     @DisplayName("должен корректно возвращать автора по id")
     @Test
     void authorShouldBeReturnedById() {
-        long firstCommentId = 10;
+        String firstCommentId = "10";
         Optional<BookComment> firstCommentOptional = commentRepository.findById(firstCommentId);
         assertTrue(firstCommentOptional.isPresent());
         BookComment comment = firstCommentOptional.get();
@@ -83,8 +83,8 @@ public class BookCommentRepositoryTest {
     void authorShouldBeDeleted() {
         BookComment comment = BookComment.builder().book(bookHelper).text("init").build();
         BookComment savedComment = commentRepository.save(comment);
-        assertTrue(commentRepository.deleteById(savedComment.getId()));
-        assertFalse(commentRepository.deleteById(savedComment.getId()));
+        assertTrue(commentRepository.deleteByIdBool(savedComment.getId()));
+        assertFalse(commentRepository.deleteByIdBool(savedComment.getId()));
     }
 
     @DisplayName("должны находить все комменты книги")
