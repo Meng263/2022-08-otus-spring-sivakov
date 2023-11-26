@@ -25,7 +25,11 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testCompileOnly("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.11.1")
+//    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.11.1")
+    val testContainersVersion = "1.19.3"
+    testImplementation("org.testcontainers:mongodb:$testContainersVersion")
+    testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
 }
 
 tasks.getByName<Test>("test") {
