@@ -7,7 +7,4 @@ import ru.otus.mongo.model.BookComment;
 import java.util.List;
 
 public interface CommentRepository extends MongoRepository<BookComment, String>, CommentRepositoryCustom {
-
-    List<BookComment> findByBook(Book book);
-
 }

@@ -1,10 +1,18 @@
 package ru.otus.mongo.repository;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mongo.MongoSpringBootTest;
 import ru.otus.mongo.model.Author;
+import ru.otus.mongo.model.Book;
+import ru.otus.mongo.model.BookComment;
+import ru.otus.mongo.model.Genre;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +24,31 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthorRepositoryTest {
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private List<Author> authors;
+    private List<Genre> genres;
+    private List<Book> books;
+    private List<BookComment> comments;
+
+    @BeforeEach
+    void setUp() {
+        authors = mongoTemplate.findAll(Author.class);
+        genres = mongoTemplate.findAll(Genre.class);
+        books = mongoTemplate.findAll(Book.class);
+        comments = mongoTemplate.findAll(BookComment.class);
+    }
+
+    @AfterEach
+    void tearDown() {
+        mongoTemplate.getDb().drop();
+        mongoTemplate.insertAll(authors);
+        mongoTemplate.insertAll(genres);
+        mongoTemplate.insertAll(books);
+        mongoTemplate.insertAll(comments);
+    }
 
     @DisplayName("возвращать ожидаемое количество авторов в БД")
     @Test
@@ -30,7 +63,7 @@ class AuthorRepositoryTest {
         String authorName = "new authorName";
         Author author = Author.builder().name(authorName).build();
         Author newAuthor = authorRepository.save(author);
-        assertNotEquals(newAuthor.getId(), 0L);
+        assertNotNull(newAuthor.getId());
         assertEquals(newAuthor.getName(), authorName);
     }
 

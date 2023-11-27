@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 
 @Document("books")
 @Data
@@ -25,4 +27,7 @@ public class Book {
 
     @DBRef
     private Genre genre;
+
+    @DBRef
+    private List<BookComment> comments;
 }

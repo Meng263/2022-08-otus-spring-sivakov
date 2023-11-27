@@ -3,12 +3,17 @@ package ru.otus.mongo;
 import org.springframework.context.annotation.Configuration;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.MountableFile;
 
 @Configuration
 public class MongoDBTestContainerConfig {
     @Container
-    public static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest")
-            .withExposedPorts(27017);
+    public static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:7.0.3")
+            .withExposedPorts(27017)
+            .withCopyFileToContainer(
+                    MountableFile.forClasspathResource("./init-scripts.js"),
+                    "/docker-entrypoint-initdb.d/init-script.js"
+            );
 
     static {
         mongoDBContainer.start();

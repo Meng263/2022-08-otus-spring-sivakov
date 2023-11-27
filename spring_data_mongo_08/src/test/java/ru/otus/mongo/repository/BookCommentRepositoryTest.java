@@ -1,14 +1,16 @@
 package ru.otus.mongo.repository;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.mongo.MongoSpringBootTest;
+import ru.otus.mongo.model.Author;
 import ru.otus.mongo.model.Book;
 import ru.otus.mongo.model.BookComment;
+import ru.otus.mongo.model.Genre;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,31 @@ public class BookCommentRepositoryTest {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private List<Author> authors;
+    private List<Genre> genres;
+    private List<Book> books;
+    private List<BookComment> comments;
+
+    @BeforeEach
+    void setUp() {
+        authors = mongoTemplate.findAll(Author.class);
+        genres = mongoTemplate.findAll(Genre.class);
+        books = mongoTemplate.findAll(Book.class);
+        comments = mongoTemplate.findAll(BookComment.class);
+    }
+
+    @AfterEach
+    void tearDown() {
+        mongoTemplate.getDb().drop();
+        mongoTemplate.insertAll(authors);
+        mongoTemplate.insertAll(genres);
+        mongoTemplate.insertAll(books);
+        mongoTemplate.insertAll(comments);
+    }
 
     private final Book bookHelper = Book.builder().id("100").name("book helper").build();
 
@@ -84,17 +111,6 @@ public class BookCommentRepositoryTest {
         BookComment savedComment = commentRepository.save(comment);
         assertTrue(commentRepository.deleteByIdBool(savedComment.getId()));
         assertFalse(commentRepository.deleteByIdBool(savedComment.getId()));
-    }
-
-    @DisplayName("должны находить все комменты книги")
-    @Test
-    void authorShouldBeFoundByName() {
-        String name = "HORROR";
-        List<BookComment> comments = commentRepository.findByBook(bookHelper);
-        assertThat(comments).hasSize(2);
-        comments.forEach(comment -> assertEquals(bookHelper.getId(), comment.getBook().getId()));
-        assertEquals("COMMENT5",comments.get(0).getText());
-        assertEquals("COMMENT6",comments.get(1).getText());
     }
 
     @DisplayName("Должны удалить всех и получить их количество")

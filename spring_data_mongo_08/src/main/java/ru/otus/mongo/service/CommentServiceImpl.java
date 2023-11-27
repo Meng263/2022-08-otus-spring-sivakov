@@ -35,6 +35,6 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public List<BookComment> getAllBookComments(String bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow();
-        return commentRepository.findByBook(book);
+        return book.getComments().stream().toList();
     }
 }
