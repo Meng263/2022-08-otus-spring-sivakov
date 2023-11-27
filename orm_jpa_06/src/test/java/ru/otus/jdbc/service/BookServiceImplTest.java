@@ -97,9 +97,9 @@ class BookServiceImplTest {
         Author secondAuthor = new Author(20, "second_auhtor");
         Genre firstGenre = new Genre(10, "fist_genre");
         Genre secondGenre = new Genre(20, "second_genre");
-        Book book = new Book(10, "book", firstAuthor, firstGenre);
+        Book book = Book.builder().id(10).name("book").author(firstAuthor).genre(firstGenre).build();
         String newBookName = "newBookName";
-        Book newBook = new Book(10, newBookName, secondAuthor, secondGenre);
+        Book newBook = Book.builder().id(10).name(newBookName).author(secondAuthor).genre(secondGenre).build();;
         given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(authorRepository.getById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
         given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
@@ -119,7 +119,7 @@ class BookServiceImplTest {
     void bookShouldBeReturnedById() {
         Author firstAuthor = new Author(10, "first_auhtor");
         Genre firstGenre = new Genre(10, "fist_genre");
-        Book book = new Book(10, "book", firstAuthor, firstGenre);
+        Book book = Book.builder().id(10).name("book").author(firstAuthor).genre(firstGenre).build();
         given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
         given(bookRepository.getById(book.getId())).willReturn(Optional.of(book));
@@ -136,7 +136,7 @@ class BookServiceImplTest {
     void bookShouldBeDeleted() {
         Author firstAuthor = new Author(10, "first_auhtor");
         Genre firstGenre = new Genre(10, "fist_genre");
-        Book book = new Book(10, "book", firstAuthor, firstGenre);
+        Book book = Book.builder().id(10).name("book").author(firstAuthor).genre(firstGenre).build();
         given(bookRepository.deleteById(book.getId())).willReturn(true).willReturn(false);
 
         assertTrue(bookService.deleteBookById(book.getId()));

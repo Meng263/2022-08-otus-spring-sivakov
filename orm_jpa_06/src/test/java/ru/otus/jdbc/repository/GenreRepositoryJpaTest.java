@@ -73,7 +73,7 @@ class GenreRepositoryJpaTest {
     }
 
     @DisplayName("жанр должен удаляться по id")
-//    @Test
+    @Test
     void genreShouldBeDeleted() {
         Genre genre = Genre.builder().name("new_genre").build();
         Genre newGenre = genreRepository.save(genre);

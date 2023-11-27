@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import(BookRepositoryJpa.class)
-class BookRepositroyJpaTest {
+class BookRepositoryTest {
 
     @Autowired
     private BookRepositoryJpa bookRepository;
@@ -96,5 +96,5 @@ class BookRepositroyJpaTest {
         assertFalse(bookRepository.deleteById(rusalkaId));
     }
 
-    private static final int DEFAULT_REPOSITORY_SIZE = 2;
+    private static final int DEFAULT_REPOSITORY_SIZE = 3;
 }

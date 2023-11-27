@@ -55,7 +55,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Book findBookById(long id) {
         return bookRepository.getById(id).orElseThrow();
     }

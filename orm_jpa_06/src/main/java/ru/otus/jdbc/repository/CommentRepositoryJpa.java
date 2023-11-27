@@ -1,6 +1,7 @@
 package ru.otus.jdbc.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.otus.jdbc.model.Book;
 import ru.otus.jdbc.model.BookComment;
@@ -11,7 +12,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class CommentRepositoryJpa implements CommentRepository {
     @PersistenceContext
@@ -38,15 +39,6 @@ public class CommentRepositoryJpa implements CommentRepository {
     @Override
     public Optional<BookComment> getById(long id) {
         return Optional.ofNullable(entityManager.find(BookComment.class, id));
-    }
-
-    @Override
-    public List<BookComment> getAllForBook(Book book) {
-        TypedQuery<BookComment> query = entityManager.createQuery(
-                "select c from BookComment c where c.book = :book",
-                BookComment.class);
-        query.setParameter("book", book);
-        return query.getResultList();
     }
 
     @Override
