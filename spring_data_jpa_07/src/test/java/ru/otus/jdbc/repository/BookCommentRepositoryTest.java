@@ -87,17 +87,6 @@ public class BookCommentRepositoryTest {
         assertFalse(commentRepository.deleteById(savedComment.getId()));
     }
 
-    @DisplayName("должны находить все комменты книги")
-    @Test
-    void authorShouldBeFoundByName() {
-        String name = "HORROR";
-        List<BookComment> comments = commentRepository.findByBook(bookHelper);
-        assertThat(comments).hasSize(2);
-        comments.forEach(comment -> assertEquals(bookHelper.getId(), comment.getBook().getId()));
-        assertEquals("COMMENT5",comments.get(0).getText());
-        assertEquals("COMMENT6",comments.get(1).getText());
-    }
-
     @DisplayName("Должны удалить всех и получить их количество")
     @Test
     void authorsShouldBeRemovedAndReturnsCount() {

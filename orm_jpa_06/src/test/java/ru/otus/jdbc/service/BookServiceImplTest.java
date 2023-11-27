@@ -99,7 +99,7 @@ class BookServiceImplTest {
         Genre secondGenre = new Genre(20, "second_genre");
         Book book = Book.builder().id(10).name("book").author(firstAuthor).genre(firstGenre).build();
         String newBookName = "newBookName";
-        Book newBook = Book.builder().id(10).name(newBookName).author(secondAuthor).genre(secondGenre).build();;
+        Book newBook = Book.builder().id(10).name(newBookName).author(secondAuthor).genre(secondGenre).build();
         given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
         given(authorRepository.getById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
         given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
