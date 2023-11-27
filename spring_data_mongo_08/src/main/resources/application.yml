@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      database: libraly
+      port: 27017
+      host: localhost
+      auto-index-creation: true
+
+  shell:
+    interactive:
+      enabled: true
+
+logging:
+  level:
+    root: error

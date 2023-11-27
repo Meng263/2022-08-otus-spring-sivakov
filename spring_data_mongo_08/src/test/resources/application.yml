@@ -1,0 +1,10 @@
+spring:
+  shell:
+    interactive:
+      enabled: true
+  data:
+    mongodb:
+      database: testDatabase
+      port: ${mongodb.container.port}
+      host: localhost
+      auto-index-creation: true
