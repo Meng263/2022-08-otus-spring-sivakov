@@ -8,7 +8,6 @@ import ru.otus.jdbc.model.Author;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface AuthorRepository extends JpaRepository<Author, Long>, AuthorRepositoryCustom {
     Optional<Author> findByName(String name);
 }

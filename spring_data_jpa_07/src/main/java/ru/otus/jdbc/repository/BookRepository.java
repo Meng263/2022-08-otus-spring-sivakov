@@ -6,7 +6,6 @@ import ru.otus.jdbc.model.Book;
 
 import java.util.Optional;
 
-@Repository
 public interface BookRepository extends JpaRepository<Book, Long>, BookRepositoryCustom {
     Optional<Book> findByName(String name);
 }
