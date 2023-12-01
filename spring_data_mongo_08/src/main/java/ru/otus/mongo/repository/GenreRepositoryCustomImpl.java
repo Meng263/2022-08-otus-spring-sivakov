@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import ru.otus.mongo.model.Book;
 import ru.otus.mongo.model.Genre;
 
-@Component
 @RequiredArgsConstructor
 public class GenreRepositoryCustomImpl implements GenreRepositoryCustom {
     private final MongoTemplate mongoTemplate;

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import ru.otus.mongo.model.Book;
 import ru.otus.mongo.model.BookComment;
 
-@Repository
 @RequiredArgsConstructor
 public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
     private final MongoTemplate mongoTemplate;

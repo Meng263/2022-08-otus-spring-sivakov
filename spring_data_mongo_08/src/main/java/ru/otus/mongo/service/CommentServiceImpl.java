@@ -18,7 +18,6 @@ public class CommentServiceImpl implements CommentService {
     private final BookRepository bookRepository;
 
     @Override
-    @Transactional
     public BookComment addComment(String bookId, String commentText) {
         Book book = Book.builder().id(bookId).build();
         BookComment bookComment = BookComment.builder().text(commentText).book(book).build();
@@ -26,13 +25,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<BookComment> getAllComments() {
         return commentRepository.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<BookComment> getAllBookComments(String bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow();
         return book.getComments().stream().toList();

@@ -10,7 +10,6 @@ import ru.otus.mongo.model.Author;
 import ru.otus.mongo.model.Book;
 
 
-@Repository
 @RequiredArgsConstructor
 public class AuthorRepositoryCustomImpl implements AuthorRepositoryCustom {
     private final MongoTemplate mongoTemplate;
