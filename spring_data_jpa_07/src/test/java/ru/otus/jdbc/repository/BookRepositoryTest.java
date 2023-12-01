@@ -92,9 +92,15 @@ class BookRepositoryTest {
     @DisplayName("книга должена удаляться по id")
     @Test
     void bookShouldBeDeleted() {
-        int rusalkaId = 10;
+        long rusalkaId = 10;
+        // загружаем в контекст сущность
+        Book reference = bookRepository.getReferenceById(rusalkaId);
+        // удаляем
         assertTrue(bookRepository.deleteById(rusalkaId));
         assertFalse(bookRepository.deleteById(rusalkaId));
+        // снова загружаем и проверяем что объект удален
+        Optional<Book> founded = bookRepository.findById(rusalkaId);
+        assertTrue(founded.isEmpty());
     }
 
     @DisplayName("должны находить книгу по имени")
