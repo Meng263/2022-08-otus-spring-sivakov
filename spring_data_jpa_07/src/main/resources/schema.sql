@@ -1,0 +1,30 @@
+DROP TABLE IF EXISTS AUTHORS CASCADE;
+CREATE TABLE IF NOT EXISTS AUTHORS
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+DROP TABLE IF EXISTS GENRES CASCADE;
+CREATE TABLE IF NOT EXISTS GENRES
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+DROP TABLE IF EXISTS BOOKS CASCADE;
+CREATE TABLE IF NOT EXISTS BOOKS
+(
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name      VARCHAR(255) NOT NULL,
+    author_id bigint references AUTHORS (id) on delete cascade on update cascade,
+    genre_id  bigint references GENRES (id) on delete cascade on update cascade
+);
+
+DROP TABLE IF EXISTS COMMENTS CASCADE;
+CREATE TABLE IF NOT EXISTS COMMENTS
+(
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    text    VARCHAR(255) NOT NULL,
+    book_id bigint references BOOKS (id) on delete cascade on update cascade
+);

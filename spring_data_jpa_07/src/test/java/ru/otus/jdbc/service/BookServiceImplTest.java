@@ -63,9 +63,9 @@ class BookServiceImplTest {
                 .genre(genreHelper)
                 .build();
 
-        given(authorRepository.getById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
-        given(genreRepository.getById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
-        given(bookRepository.getById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
+        given(authorRepository.findById(authorHelper.getId())).willReturn(Optional.of(authorHelper));
+        given(genreRepository.findById(genreHelper.getId())).willReturn(Optional.of(genreHelper));
+        given(bookRepository.findById(bookWithId.getId())).willReturn(Optional.of(bookWithId));
         given(bookRepository.save(book)).willReturn(bookWithId);
 
         Book newBook = bookService.addBook(book.getName(), authorHelper.getId(), genreHelper.getId());
@@ -85,7 +85,7 @@ class BookServiceImplTest {
                 .genre(genre)
                 .build();
         List<Book> bookList = List.of(book);
-        given(bookRepository.getAll()).willReturn(bookList);
+        given(bookRepository.findAll()).willReturn(bookList);
 
         assertEquals(bookService.getAll(), bookList);
     }
@@ -100,12 +100,12 @@ class BookServiceImplTest {
         Book book = Book.builder().id(10).name("book").author(firstAuthor).genre(firstGenre).build();
         String newBookName = "newBookName";
         Book newBook = Book.builder().id(10).name(newBookName).author(secondAuthor).genre(secondGenre).build();
-        given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
-        given(authorRepository.getById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
-        given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
-        given(genreRepository.getById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
+        given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
+        given(authorRepository.findById(secondAuthor.getId())).willReturn(Optional.of(secondAuthor));
+        given(genreRepository.findById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
+        given(genreRepository.findById(secondGenre.getId())).willReturn(Optional.of(secondGenre));
         given(bookRepository.save(newBook)).willReturn(newBook);
-        given(bookRepository.getById(newBook.getId())).willReturn(Optional.of(newBook));
+        given(bookRepository.findById(newBook.getId())).willReturn(Optional.of(newBook));
 
         Book updatedBook = bookService.changeBook(book.getId(), newBookName, secondAuthor.getId(), secondGenre.getId());
         assertEquals(updatedBook.getId(), book.getId());
@@ -120,9 +120,9 @@ class BookServiceImplTest {
         Author firstAuthor = new Author(10, "first_auhtor");
         Genre firstGenre = new Genre(10, "fist_genre");
         Book book = Book.builder().id(10).name("book").author(firstAuthor).genre(firstGenre).build();
-        given(authorRepository.getById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
-        given(genreRepository.getById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
-        given(bookRepository.getById(book.getId())).willReturn(Optional.of(book));
+        given(authorRepository.findById(firstAuthor.getId())).willReturn(Optional.of(firstAuthor));
+        given(genreRepository.findById(firstGenre.getId())).willReturn(Optional.of(firstGenre));
+        given(bookRepository.findById(book.getId())).willReturn(Optional.of(book));
 
         Book gettedBook = bookService.findBookById(book.getId());
         assertEquals(gettedBook.getId(), book.getId());
